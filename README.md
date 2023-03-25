@@ -1,2 +1,1 @@
-# std-manager
-a project to manage the situation of students and teachers.
+<h1 align = "center">[🚧]The project is in progress[🚧]</h1>
