@@ -1,4 +1,5 @@
 from PyQt6 import QtWidgets, QtCore, QtGui
+import sqlite3
 import screeninfo
 import sys
 
@@ -52,6 +53,15 @@ class MyApp(QtWidgets.QMainWindow):
         self.btn_log.setText('LOGIN')
         self.btn_log.setGeometry(280, 390, 200, 50)
         self.btn_log.setObjectName('btn_log')
+        self.btn_log.clicked.connect(self.check_user)
+
+    def check_user(self):
+        file_path = "data/users.db"
+        con = sqlite3.connect(file_path)
+        cursor = con.cursor()
+        for row in cursor.execute('SELECT ID FROM all_users'):
+            print(row[0])
+        print('a')
 
 
 
