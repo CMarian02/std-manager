@@ -1,22 +1,54 @@
 QMainWindow{
     background-color: #2e2626;
 }
+/* Edit Labels */
 
 QLabel#log_title{
     font-family: Bebas Neue;
-    font-size: 60px;
+    font-size: 80px;
     color: darkmagenta;
+}
+
+QLabel#version_text{
+    font-family: Roboto;
+    font-size: 12px;
+    font-weight: 800;
+    color: #ffffff;
 }
 
 QLabel#input_text{
     font-family: Roboto;
     font-weight: 900;
-    font-size: 16px;
+    font-size: 20px;
     color:white;
 }
 
+QLabel#info_title{
+    font-family: Bebas Neue;
+    font-weight: 900;
+    font-size: 25px;
+    color: greenyellow;
+}
+
+QLabel#info_text{
+    border: 3px solid green;
+    background-color: goldenrod;
+    justify-content: center;
+}
+/* Edit Inputs */
+
 QLineEdit#input_logpg{
     border-radius: 7px;
-    font-size: 12px;
+    font-size: 16px;
     font-family: 'Courier New';
+    font-weight: 800;
+}
+
+/* Edit Buttons */
+
+QPushButton#btn_log{
+    border-radius: 6px;
+    color: black;
+    font-weight: 900;
+    background-color: white;
 }
