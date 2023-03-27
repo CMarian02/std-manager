@@ -1,6 +1,7 @@
 from PyQt6 import QtWidgets, QtCore, QtGui
 import sqlite3
 import screeninfo
+from pages import *
 import sys
 
 #for monitor in screeninfo.get_monitors():
@@ -56,15 +57,31 @@ class MyApp(QtWidgets.QMainWindow):
         self.btn_log.clicked.connect(self.check_user)
 
     def check_user(self):
-        file_path = "data/users.db"
-        con = sqlite3.connect(file_path)
-        cursor = con.cursor()
-        for row in cursor.execute('SELECT ID FROM all_users'):
-            print(row[0])
-        print('a')
-
-
-
+        conn = sqlite3.connect('data/users.db')
+        cursor = conn.cursor()
+        usernames = []
+        for user in cursor.execute('SELECT "Last Name" FROM all_users'):
+            usernames.append(user)
+        for username in usernames:
+            if username[0].lower() == self.inp_name.text().lower():
+                for pas in cursor.execute('SELECT Password FROM all_users WHERE "Last Name" = (?)', (self.inp_name.text(),)):
+                    vfy_pass = str(pas[0])
+                if vfy_pass == self.inp_pass.text():
+                    for student in cursor.execute('SELECT Student FROM all_users WHERE "Last Name" = (?)', (self.inp_name.text(),)):
+                        is_student = student[0]
+                    if is_student == "Yes":
+                        print('Welcome to your Student Account!')
+                        reset_pass_frame = ResetPassword()
+                        reset_pass_frame.show()
+                        break
+                    else:
+                        print('Welcome to your Teacher Account!')
+                        break
+                else:
+                    print('You have a problem, your password is wrong!')
+                    break
+        cursor.close()
+            
 
 #Running App
 
