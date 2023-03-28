@@ -1,1 +1,0 @@
- self.inp_pass.setEchoMode(QtWidgets.QLineEdit.EchoMode.Password)
