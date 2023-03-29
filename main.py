@@ -75,7 +75,7 @@ class MyApp(QtWidgets.QMainWindow):
                         for first in cursor.execute('SELECT First_time FROM all_users WHERE "Last Name" = (?)', (self.inp_name.text().capitalize(),)):
                             first_time = first[0]
                         if first_time == "Yes":
-                            reset_frame = ResetPassword()
+                            reset_frame = ResetPassword(self.inp_name.text())
                             self.setCentralWidget(reset_frame)
                         else:
                             print('go to main app')
@@ -83,7 +83,7 @@ class MyApp(QtWidgets.QMainWindow):
                         for first in cursor.execute('SELECT First_time FROM all_users WHERE "Last Name" = (?)', (self.inp_name.text().capitalize(),)):
                             first_time = first[0]
                         if first_time == "Yes":
-                            reset_frame = ResetPassword()
+                            reset_frame = ResetPassword(self.inp_name.text())
                             self.setCentralWidget(reset_frame)
                         else:
                             print('go to main app')

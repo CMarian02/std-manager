@@ -3,10 +3,10 @@ from PyQt6 import QtWidgets, QtCore, QtGui
 import sqlite3
 
 class ResetPassword(QtWidgets.QFrame):
-    def __init__(self):
+    def __init__(self, name_input):
         super().__init__()
         self.resize(800, 650)
-
+        self.name_input = name_input
         #labels
         self.log_title = QtWidgets.QLabel('CHANGE PASSWORD', self)
         self.log_title.setGeometry(150, 70, 500, 90)
@@ -52,6 +52,15 @@ class ResetPassword(QtWidgets.QFrame):
         else:
             print('<8 char.')
 
-    # Insert new password in your DataBase file
+        # Insert new password in your DataBase file
 
-    
+        if Strong == True:
+            conn = sqlite3.connect('data/users.db')
+            cursor = conn.cursor()
+            cursor.execute('UPDATE all_users SET First_Time = "No" WHERE "Last Name" = (?)', (self.name_input,))
+            cursor.execute('UPDATE all_users SET Password = (?) WHERE "Last Name" = (?)', (self.inp_npass.text(), self.name_input))
+            conn.commit()
+            cursor.close()
+            conn.close()
+            print('Your data is updated! Now you go to Main Page')
+        
