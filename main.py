@@ -15,19 +15,20 @@ class MyApp(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("STD-Manager")
-        self.resize(800, 650)
-        self.setMinimumSize(800, 650)
-        self.setMaximumSize(800, 650)
+        self.resize(800,650)
+        self.setMinimumSize(QtCore.QSize(800, 650))
+        self.setMaximumSize(QtCore.QSize(800, 650))
+        #self.setWindowFlags(QtCore.Qt.WindowType.FramelessWindowHint)
         self.centralwidget = QtWidgets.QWidget(self)
         self.setCentralWidget(self.centralwidget)
-
+    
         #-----------SING IN-----------
 
         # labels
         self.log_title = QtWidgets.QLabel('SING IN', self.centralwidget)
         self.log_title.setGeometry(305, 70, 190, 90)
         self.log_title.setObjectName('log_title')
-        self.inp_text_name = QtWidgets.QLabel('USERNAME', self.centralwidget)
+        self.inp_text_name = QtWidgets.QLabel('YOUR CNP', self.centralwidget)
         self.inp_text_name.setGeometry(150, 255, 130, 50)
         self.inp_text_name.setObjectName('input_text')
         self.inp_text_pass = QtWidgets.QLabel('PASSWORD', self.centralwidget)
@@ -81,7 +82,9 @@ class MyApp(QtWidgets.QMainWindow):
                             reset_frame = ResetPassword(self.inp_cnp.text())
                             self.setCentralWidget(reset_frame)
                         else:
-                            print('go to main app')
+                            self.close()
+                            self.main_app = AppWindow()
+                            self.main_app.show()
                     else:
                         for first in cursor.execute('SELECT First_time FROM all_users WHERE "CNP" = (?)', (self.inp_cnp.text(),)):
                             first_time = first[0]
@@ -89,7 +92,9 @@ class MyApp(QtWidgets.QMainWindow):
                             reset_frame = ResetPassword(self.inp_cnp.text())
                             self.setCentralWidget(reset_frame)
                         else:
-                            print('go to main app')
+                            self.close()
+                            self.main_app = AppWindow()
+                            self.main_app.show()
                             
                 else:
                     print('You have a problem, your password is wrong!')
