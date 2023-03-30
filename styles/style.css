@@ -34,6 +34,18 @@ QLabel#info_text{
     border: 3px solid green;
     background-color: goldenrod;
 }
+
+QLabel#icons_zone{
+    background-color: red;
+}
+
+QLabel#select_zone{
+    background-color: green;
+}
+
+QLabel#table_border{
+    background-color: blue;
+}
 /* Edit Inputs */
 
 QLineEdit#input_logpg{
