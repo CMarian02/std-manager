@@ -33,7 +33,18 @@ QLabel#info_title{
 QLabel#info_text{
     border: 3px solid green;
     background-color: goldenrod;
-    justify-content: center;
+}
+
+QLabel#icons_zone{
+    background-color: red;
+}
+
+QLabel#select_zone{
+    background-color: green;
+}
+
+QLabel#table_border{
+    background-color: blue;
 }
 /* Edit Inputs */
 
@@ -51,4 +62,8 @@ QPushButton#btn_log{
     color: black;
     font-weight: 900;
     background-color: white;
+}
+
+QFrame#ResetPassword{
+    background-color: red;
 }
