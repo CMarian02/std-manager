@@ -1,5 +1,5 @@
 QMainWindow{
-    background-color: #2e2626;
+    background-color: #1a181b;
 }
 /* Edit Labels */
 
@@ -46,10 +46,30 @@ QLabel#select_zone{
 QLabel#table_border{
     background-color: blue;
 }
+
+QLabel#left_cont{
+    background-color: #071120;
+    border-top-left-radius: 50%;
+    border-bottom-left-radius: 50%;
+}
+
+QLabel#right_cont{
+    background-color: grey;
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 50%;
+}
+
+QLabel#student_cap{
+    background-image:url('img/prof_cap.png')
+}
+
+/*QLabel#profile_img{
+    background-image:url('img/profile.png')
+} */
 /* Edit Inputs */
 
 QLineEdit#input_logpg{
-    border-radius: 7px;
+    border-radius: 10px;
     font-size: 16px;
     font-family: 'Courier New';
     font-weight: 800;
