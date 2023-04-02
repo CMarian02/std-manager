@@ -1,6 +1,6 @@
 from PyQt6 import QtWidgets, QtCore, QtGui
 import sqlite3
-import screeninfo
+# import screeninfo
 from pages import *
 import sys
 
@@ -32,11 +32,14 @@ class MyApp(QtWidgets.QMainWindow):
         self.right_cont.setGeometry(410, 150, 250, 400)
         self.right_cont.setObjectName('right_cont')
         self.std_img = QtWidgets.QLabel(self.centralwidget)
-        self.std_img.setGeometry(150, 130, 200, 200)
+        self.std_img.setGeometry(150, 140, 200, 200)
         self.std_img.setObjectName('student_cap')
         self.profile_img = QtWidgets.QLabel(self.centralwidget)
-        self.profile_img.setGeometry(150, 300, 220, 200)
+        self.profile_img.setGeometry(150, 320, 220, 200)
         self.profile_img.setObjectName('profile_img')
+        self.profcap_img = QtWidgets.QLabel(self.centralwidget)
+        self.profcap_img.setGeometry(435, 120, 220, 180)
+        self.profcap_img.setObjectName('profcap')
         #self.log_title = QtWidgets.QLabel('SING IN', self.centralwidget)
         #self.log_title.setGeometry(305, 70, 190, 90)
         #self.log_title.setObjectName('log_title')
@@ -46,8 +49,8 @@ class MyApp(QtWidgets.QMainWindow):
         #self.inp_text_pass = QtWidgets.QLabel('PASSWORD', self.centralwidget)
         #self.inp_text_pass.setGeometry(150, 315, 130, 50)
         #self.inp_text_pass.setObjectName('input_text')
-        self.vers_text = QtWidgets.QLabel('version 0.1', self.centralwidget)
-        self.vers_text.setGeometry(735, 630, 70, 20)
+        self.vers_text = QtWidgets.QLabel('v0.1.5', self.centralwidget)
+        self.vers_text.setGeometry(765, 630, 70, 20)
         self.vers_text.setObjectName('version_text')
         #self.info_title = QtWidgets.QLabel('INFO', self.centralwidget)
         #self.info_title.setGeometry(680, 150, 150, 70)
@@ -57,17 +60,21 @@ class MyApp(QtWidgets.QMainWindow):
         #self.info_text.setObjectName('info_text')
         # intputs
         self.inp_cnp = QtWidgets.QLineEdit(self.centralwidget)
-        self.inp_cnp.setGeometry(420, 260, 200, 40)
+        self.inp_cnp.setGeometry(435, 320, 200, 40)
+        self.inp_cnp.setPlaceholderText('YOUR CNP')
         self.inp_cnp.setObjectName('input_logpg')
         self.inp_pass = QtWidgets.QLineEdit(self.centralwidget)
-        self.inp_pass.setGeometry(420, 320, 200, 40)
+        self.inp_pass.setGeometry(435, 380, 200, 40)
+        self.inp_pass.setPlaceholderText('Password')
         self.inp_pass.setObjectName('input_logpg')
         self.inp_pass.setEchoMode(QtWidgets.QLineEdit.EchoMode.Password)
+
 
         #buttons
         self.btn_log = QtWidgets.QPushButton(self.centralwidget)
         self.btn_log.setText('LOGIN')
-        self.btn_log.setGeometry(420, 390, 200, 50)
+        self.btn_log.setGeometry(435, 460, 200, 50)
+        self.btn_log.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.btn_log.setObjectName('btn_log')
         self.btn_log.clicked.connect(self.check_user)
 

@@ -3,20 +3,21 @@ QMainWindow{
 }
 /* Edit Labels */
 
-QLabel#log_title{
+/*QLabel#log_title{
     font-family: Bebas Neue;
     font-size: 80px;
     color: darkmagenta;
-}
+} */
 
 QLabel#version_text{
     font-family: Roboto;
+    text-transform: capitalize;
     font-size: 12px;
     font-weight: 800;
-    color: #ffffff;
+    color: #afa9a993;
 }
 
-QLabel#input_text{
+/*QLabel#input_text{
     font-family: Roboto;
     font-weight: 900;
     font-size: 20px;
@@ -33,7 +34,7 @@ QLabel#info_title{
 QLabel#info_text{
     border: 3px solid green;
     background-color: goldenrod;
-}
+} */
 
 QLabel#icons_zone{
     background-color: red;
@@ -54,36 +55,48 @@ QLabel#left_cont{
 }
 
 QLabel#right_cont{
-    background-color: grey;
+    background-color:  #0F4D3A;
     border-top-right-radius: 50%;
     border-bottom-right-radius: 50%;
 }
 
 QLabel#student_cap{
-    background-image:url('img/prof_cap.png')
+    background-image:url('img/std_cap.png');
 }
 
-/*QLabel#profile_img{
-    background-image:url('img/profile.png')
-} */
+QLabel#profile_img{
+    background-image:url('img/profile.png');
+} 
+
+QLabel#profcap{
+    background-image:url('img/prof_cap.png')
+}
 /* Edit Inputs */
 
 QLineEdit#input_logpg{
     border-radius: 10px;
+    color: white;
     font-size: 16px;
     font-family: 'Courier New';
     font-weight: 800;
+    background:transparent;
+    border-bottom: 1px solid whitesmoke;
 }
 
-/* Edit Buttons */
+QLineEdit#input_logpg:hover{
+    border-bottom: 1.5px solid whitesmoke;
+}
 
+
+/* Edit Buttons */
 QPushButton#btn_log{
     border-radius: 6px;
     color: black;
     font-weight: 900;
-    background-color: white;
+    background-color: whitesmoke;
 }
 
-QFrame#ResetPassword{
-    background-color: red;
+QPushButton#btn_log:hover{
+    background-color:aliceblue;
 }
+
