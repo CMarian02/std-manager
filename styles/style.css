@@ -71,6 +71,10 @@ QLabel#profile_img{
 QLabel#profcap{
     background-image:url('img/prof_cap.png')
 }
+
+QLabel#fac_logo{
+    background-color: white;
+}
 /* Edit Inputs */
 
 QLineEdit#input_logpg{
@@ -100,3 +104,16 @@ QPushButton#btn_log:hover{
     background-color:aliceblue;
 }
 
+QPushButton#year_btn{
+    border-radius: 5px;
+    padding: 10px;
+    color: white;
+    background-color:#071120;
+    font-family: Roboto;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+QTableWidget{
+    background-color: #0F4D3A;
+}
