@@ -72,8 +72,36 @@ QLabel#profcap{
     background-image:url('img/prof_cap.png')
 }
 
-QLabel#fac_logo{
-    background-color: white;
+QLabel#CH{
+    background-image:url('img/fac/CH.png')
+}
+
+QLabel#MEC{
+    background-image:url('img/fac/MEC.png')
+}
+
+QLabel#CI{
+    background-image:url('img/fac/CI.png')
+}
+
+QLabel#DIMA{
+    background-image: url('img/fac/DIMA.png')
+}
+
+QLabel#ETTI{
+    background-image: url('img/fac/ETTI.png')
+}
+
+QLabel#IEEIA{
+    background-image: url('img/fac/IEEIA.png')
+}
+
+QLabel#AC{
+    background-image: url('img/fac/AC.png')
+}
+
+QLabel#app_logo{
+    background-image: url('img/app_logo.png')
 }
 /* Edit Inputs */
 
@@ -112,8 +140,4 @@ QPushButton#year_btn{
     font-family: Roboto;
     font-size: 12px;
     font-weight: 700;
-}
-
-QTableWidget{
-    background-color: #0F4D3A;
 }
