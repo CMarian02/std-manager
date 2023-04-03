@@ -22,9 +22,9 @@ class AppWindow(QtWidgets.QMainWindow):
         self.vers_text = QtWidgets.QLabel('version 0.1', self.centralwidget)
         self.vers_text.setGeometry(935, 680, 70, 20)
         self.vers_text.setObjectName('version_text')
-        self.table_border = QtWidgets.QLabel(self.centralwidget)
-        self.table_border.setGeometry(100, 100, 880, 560)
-        self.table_border.setObjectName('table_border')
+       # self.table_border = QtWidgets.QLabel(self.centralwidget)
+        #self.table_border.setGeometry(100, 100, 880, 560)
+        #self.table_border.setObjectName('table_border')
         self.fac_logo = QtWidgets.QLabel(self.centralwidget)
         self.fac_logo.setGeometry(0, 0, 80, 60)
         self.put_logo(group)
@@ -82,9 +82,22 @@ class AppWindow(QtWidgets.QMainWindow):
         self.btn4.setObjectName('year_btn')
         self.btn4.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
 
+     #Table
+        self.main_table = QtWidgets.QTableWidget(5, 4, self.centralwidget)
+        self.main_table.setObjectName('table')
+        self.main_table.setGeometry(100, 100, 880, 560)
+        self.main_table.setHorizontalHeaderLabels(('Nume', 'Nota', 'Profesor', 'Email'))
+        self.main_table.verticalHeader().setVisible(False)
+        self.main_table.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
+        self.main_table.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.NoSelection)
+        self.main_table.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Stretch)
+        self.main_table.verticalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Stretch)
+
+    def fill_table(self, year):
+        pass
 
 
-    def put_logo(self,group):
+    def put_logo(self, group):
         
         if group[0] == '1':
             self.fac_logo.setObjectName('CH')

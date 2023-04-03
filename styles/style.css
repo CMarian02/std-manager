@@ -139,5 +139,21 @@ QPushButton#year_btn{
     background-color:#071120;
     font-family: Roboto;
     font-size: 12px;
-    font-weight: 700;
+    font-weight: 900;
+}
+
+QTableWidget{
+    background-color:#0F4D3A;
+    color: white;
+}
+
+QTableWidget::horizontalHeader {
+    background-color: blue;
+    color: white;
+}
+QTableView{
+    border:none;
+}
+QTableView::item{
+    border: none;
 }
