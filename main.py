@@ -97,6 +97,8 @@ class MyApp(QtWidgets.QMainWindow):
                     if is_student == "Yes":
                         for grp in cursor.execute('SELECT "Group" FROM all_users WHERE "CNP" = (?)', (self.inp_cnp.text(),)):
                             self.group = str(grp[0])
+                        for year in cursor.execute('SELECT "Year" FROM all_users WHERE "CNP" = (?)', (self.inp_cnp.text(),)):
+                            self.year = str(year[0])
                         for first in cursor.execute('SELECT First_time FROM all_users WHERE "CNP" = (?)', (self.inp_cnp.text(),)):
                             first_time = first[0]
                         if first_time == "Yes":
@@ -104,7 +106,7 @@ class MyApp(QtWidgets.QMainWindow):
                             self.setCentralWidget(reset_frame)
                         else:
                             self.close()
-                            self.main_app = AppWindow(self.inp_cnp.text(),self.group)
+                            self.main_app = AppWindow(self.inp_cnp.text(),self.group, self.year)
                             self.main_app.show()
                     else:
                         for first in cursor.execute('SELECT First_time FROM all_users WHERE "CNP" = (?)', (self.inp_cnp.text(),)):
@@ -114,7 +116,7 @@ class MyApp(QtWidgets.QMainWindow):
                             self.setCentralWidget(reset_frame)
                         else:
                             self.close()
-                            self.main_app = AppWindow(self.inp_cnp.text(),self.group)
+                            self.main_app = AppWindow(self.inp_cnp.text(), self.group, self.year)
                             self.main_app.show()
                             
                 else:

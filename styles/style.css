@@ -157,3 +157,10 @@ QTableView{
 QTableView::item{
     border: none;
 }
+
+QLabel#table_header{
+    color:white;
+    font-family: Roboto;
+    font-size:14px;
+    font-weight: 900;
+}
