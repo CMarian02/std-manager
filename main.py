@@ -106,7 +106,7 @@ class MyApp(QtWidgets.QMainWindow):
                             self.setCentralWidget(reset_frame)
                         else:
                             self.close()
-                            self.main_app = AppWindow(self.inp_cnp.text(),self.group, self.year)
+                            self.main_app = AppWindow(self.inp_cnp.text(), self.group, self.year)
                             self.main_app.show()
                     else:
                         for first in cursor.execute('SELECT First_time FROM all_users WHERE "CNP" = (?)', (self.inp_cnp.text(),)):
@@ -190,6 +190,9 @@ class ResetPassword(QtWidgets.QFrame):
             conn.commit()
             cursor.close()
             conn.close()
+            self.close()
+            self.main_app = AppWindow(self.inp_cnp.text(),self.group, self.year)
+            self.main_app.show()
             print('Your data is updated! Now you go to Main Page')
 
         
