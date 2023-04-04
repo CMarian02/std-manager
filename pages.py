@@ -109,28 +109,48 @@ class AppWindow(QtWidgets.QMainWindow):
         self.header_email.setGeometry(770, 65, 200, 30)
         self.header_email.setObjectName('table_header')
         self.header_email.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.fill_table(year, cnp)
+        self.fill_table(year, cnp, group)
 
-    def fill_table(self, year, cnp):
+    def fill_table(self, year, cnp, group):
+        
+        
         conn = sqlite3.connect('data/discipline.db')
         cursor = conn.cursor()
         table_data = []
         year = 1
         j = 0
         i = 0
+
+
         if year == 1:
-            for name in cursor.execute('SELECT "Name", "Teacher", "E-mail" FROM disciplines WHERE "Year" = 1 AND "SEM" = 1', ):
-                table_data.append(name)
+            if group[0] == '6':
+                for name in cursor.execute('SELECT "Name", "Teacher", "E-mail" FROM disciplines WHERE "Year" = 1 AND "SEM" = 1 AND "Fac" = "IEEIA"'):
+                    table_data.append(name)
 
-            for row in table_data:
-                for item in row:
-                    self.main_table.setItem(i, j, QtWidgets.QTableWidgetItem(item))
-                    j += 1
-                    if j == 3:
-                        j = 0
-                        i += 1
-                    
-
+                for row in table_data:
+                    for item in row:
+                        self.main_table.setItem(i, j, QtWidgets.QTableWidgetItem(item))
+                        j += 1
+                        if j == 3:
+                            j = 0
+                            i += 1
+                conn.commit()
+                cursor.close()
+                conn.close()
+                conn = sqlite3.connect('data/grades.db')
+                cursor = conn.cursor()
+                z = 0
+                grades = []
+                for grade in cursor.execute('SELECT "Informatica_Aplicata", "Analiza_Matematica", "Fizica", "Sport", "Programare_si_limbaje_de_programare_I" FROM grades WHERE CNP = ?', (cnp, )):
+                    grades.append(grade)
+                
+                for grade in grades:
+                    for grd in grade:
+                        self.main_table.setItem(z, 3, QtWidgets.QTableWidgetItem(str(grd)))
+                        z += 1
+                conn.commit()
+                cursor.close()
+                conn.close()
         elif year == 2:
             pass
         elif year == 3:
