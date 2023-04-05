@@ -1,15 +1,7 @@
 from PyQt6 import QtWidgets, QtCore, QtGui
 import sqlite3
-# import screeninfo
 from pages import *
 import sys
-
-#for monitor in screeninfo.get_monitors():
-#    if monitor.is_primary == True:
-#        width = int(monitor.width/2)
-#        height = int(monitor.height/2)
-#        print(f'{width} and {height}')
-    
 
 class MyApp(QtWidgets.QMainWindow):
     def __init__(self):
@@ -22,7 +14,7 @@ class MyApp(QtWidgets.QMainWindow):
         self.centralwidget = QtWidgets.QWidget(self)
         self.setCentralWidget(self.centralwidget)
     
-        #-----------SING IN-----------
+        #-----------LOGIN IN-----------#
 
         # labels
         self.left_cont = QtWidgets.QLabel(self.centralwidget)
@@ -40,24 +32,9 @@ class MyApp(QtWidgets.QMainWindow):
         self.profcap_img = QtWidgets.QLabel(self.centralwidget)
         self.profcap_img.setGeometry(435, 120, 220, 180)
         self.profcap_img.setObjectName('profcap')
-        #self.log_title = QtWidgets.QLabel('SING IN', self.centralwidget)
-        #self.log_title.setGeometry(305, 70, 190, 90)
-        #self.log_title.setObjectName('log_title')
-        #self.inp_text_name = QtWidgets.QLabel('YOUR CNP', self.centralwidget)
-        #self.inp_text_name.setGeometry(400, 250, 130, 50)
-        #self.inp_text_name.setObjectName('input_text')
-        #self.inp_text_pass = QtWidgets.QLabel('PASSWORD', self.centralwidget)
-        #self.inp_text_pass.setGeometry(150, 315, 130, 50)
-        #self.inp_text_pass.setObjectName('input_text')
-        self.vers_text = QtWidgets.QLabel('v0.1.5', self.centralwidget)
+        self.vers_text = QtWidgets.QLabel('v0.1.7', self.centralwidget)
         self.vers_text.setGeometry(765, 630, 70, 20)
         self.vers_text.setObjectName('version_text')
-        #self.info_title = QtWidgets.QLabel('INFO', self.centralwidget)
-        #self.info_title.setGeometry(680, 150, 150, 70)
-        #self.info_title.setObjectName('info_title')
-        #self.info_text = QtWidgets.QLabel(self.centralwidget)
-        #self.info_text.setGeometry(600, 200, 190, 300)
-        #self.info_text.setObjectName('info_text')
         # intputs
         self.inp_cnp = QtWidgets.QLineEdit(self.centralwidget)
         self.inp_cnp.setGeometry(435, 320, 200, 40)
@@ -68,8 +45,6 @@ class MyApp(QtWidgets.QMainWindow):
         self.inp_pass.setPlaceholderText('Password')
         self.inp_pass.setObjectName('input_logpg')
         self.inp_pass.setEchoMode(QtWidgets.QLineEdit.EchoMode.Password)
-
-
         #buttons
         self.btn_log = QtWidgets.QPushButton(self.centralwidget)
         self.btn_log.setText('LOGIN')
@@ -81,6 +56,7 @@ class MyApp(QtWidgets.QMainWindow):
     def keyPressEvent(self, event):
         if event.key() == QtCore.Qt.Key.Key_Enter or event.key() == QtCore.Qt.Key.Key_Return:
             self.check_user()
+            
     def check_user(self):
         conn = sqlite3.connect('data/users.db')
         cursor = conn.cursor()
@@ -97,8 +73,7 @@ class MyApp(QtWidgets.QMainWindow):
                     if is_student == "Yes":
                         for grp in cursor.execute('SELECT "Group" FROM all_users WHERE "CNP" = (?)', (self.inp_cnp.text(),)):
                             self.group = str(grp[0])
-                        for year in cursor.execute('SELECT "Year" FROM all_users WHERE "CNP" = (?)', (self.inp_cnp.text(),)):
-                            self.year = str(year[0])
+                            self.year = str(grp[0])[1]
                         for first in cursor.execute('SELECT First_time FROM all_users WHERE "CNP" = (?)', (self.inp_cnp.text(),)):
                             first_time = first[0]
                         if first_time == "Yes":
