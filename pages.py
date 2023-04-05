@@ -113,57 +113,69 @@ class AppWindow(QtWidgets.QMainWindow):
 
     def fill_table(self, year, cnp, group):
         
-        
-        conn = sqlite3.connect('data/discipline.db')
-        cursor = conn.cursor()
+        if group[0] == '1':
+            faculty = 'CH'
+        elif group[0] == '2':
+            faculty = 'MEC'
+        elif group[0] == '3':
+            faculty = 'CI'
+        elif group[0] == '4':
+            faculty = 'DIMA'
+        elif group[0] == '5':
+            faculty = 'ETTI'
+        elif group[0] == '6':
+            faculty = 'IEEIA'
+        elif group[0] == '7':
+            faculty = 'AC'
+    
+        self.put_teach(year, faculty)       
+        self.put_grade(year, faculty, cnp)
+
+
+    def put_teach(self, year, fac):
         table_data = []
-        year = 1
         j = 0
         i = 0
-
-
-        if year == 1:
-            if group[0] == '6':
-                for name in cursor.execute('SELECT "Name", "Teacher", "E-mail" FROM disciplines WHERE "Year" = 1 AND "SEM" = 1 AND "Fac" = "IEEIA"'):
-                    table_data.append(name)
-
-                for row in table_data:
-                    for item in row:
-                        self.main_table.setItem(i, j, QtWidgets.QTableWidgetItem(item))
-                        j += 1
-                        if j == 3:
-                            j = 0
-                            i += 1
-                conn.commit()
-                cursor.close()
-                conn.close()
-                conn = sqlite3.connect('data/grades.db')
-                cursor = conn.cursor()
-                z = 0
-                grades = []
-                for grade in cursor.execute('SELECT "Informatica_Aplicata", "Analiza_Matematica", "Fizica", "Sport", "Programare_si_limbaje_de_programare_I" FROM grades WHERE CNP = ?', (cnp, )):
-                    grades.append(grade)
-                
-                for grade in grades:
-                    for grd in grade:
-                        self.main_table.setItem(z, 3, QtWidgets.QTableWidgetItem(str(grd)))
-                        z += 1
-                conn.commit()
-                cursor.close()
-                conn.close()
-        elif year == 2:
-            pass
-        elif year == 3:
-            pass
-        elif year == 4:
-            pass
-        elif year == 5:
-            pass
-        elif year == 6:
-            pass
-        else:
-            pass
-
+        conn = sqlite3.connect('data/discipline.db')
+        cursor = conn.cursor()
+        for name in cursor.execute('SELECT "Name", "Teacher", "E-mail" FROM disciplines WHERE "Year" = (?) AND "SEM" = 1 AND Fac = (?)',(str(year), fac)):
+            table_data.append(name)
+        for row in table_data:
+            for item in row:
+                self.main_table.setItem(i, j, QtWidgets.QTableWidgetItem(item))
+                j += 1
+                if j == 3:
+                    j = 0
+                    i += 1
+        conn.commit()
+        cursor.close()
+        conn.close()
+        
+    
+    def put_grade(self, year, fac, cnp):
+        z = 0
+        i = 0
+        dis_names = []
+        grades = []
+        conn = sqlite3.connect('data/discipline.db')
+        cursor = conn.cursor()
+        for name in cursor.execute('SELECT "Name" FROM disciplines WHERE "YEAR" = (?) AND "SEM" = 1 AND Fac = (?)',(str(year), fac)):
+            dis_names.append(name[0].replace(' ', '_'))
+        conn.commit()
+        cursor.close()
+        conn.close()
+        #connect to table for grades
+        conn = sqlite3.connect('data/grades.db')
+        cursor = conn.cursor()
+        for grade in cursor.execute('SELECT "{}", "{}", "{}", "{}", "{}" FROM grades WHERE CNP = ?'.format(dis_names[0], dis_names[1], dis_names[2], dis_names[3], dis_names[4]), (cnp,)):
+                grades.append(grade)
+        for grade in grades:
+            for grd in grade:
+                self.main_table.setItem(z, 3, QtWidgets.QTableWidgetItem(grd))
+                z +=1
+        conn.commit()
+        cursor.close()
+        conn.close()
 
     def put_logo(self, group):
         
