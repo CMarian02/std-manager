@@ -37,15 +37,15 @@ QLabel#info_text{
 } */
 
 QLabel#icons_zone{
-    background-color: red;
+    background-color: #1a181b;
 }
 
 QLabel#select_zone{
-    background-color: green;
+    background-color: #1a181b;
 }
 
 QLabel#table_border{
-    background-color: blue;
+    background-color: #1a181b;
 }
 
 QLabel#left_cont{
