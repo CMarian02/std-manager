@@ -84,6 +84,13 @@ QLabel#table_header{
     font-size:14px;
     font-weight: 900;
 }
+
+QLabel#semester_text{
+    color: white;
+    font-family: Roboto;
+    font-size:12px;
+    font-weight: 900;
+}
 /* Edit Inputs */
 
 QLineEdit#input_logpg{
@@ -130,19 +137,26 @@ QPushButton#year_btn_active{
     background-color: #071120;
     border-radius: 5px;
 }
+
+QPushButton#switch_sem{
+    color: white;
+    border-radius:2px;
+    background-color: #071120;
+    font-family: Roboto;
+    font-size: 12px;
+    font-weight: 900;
+}
 /* Edit Table */
 QTableWidget{
     background-color:#0F4D3A;
     color: white;
+    border:none;
+    border-radius: 10px;
 }
-
+QTableWidget::item{
+    text-align:center;
+}
 QTableWidget::horizontalHeader {
     background-color: blue;
     color: white;
-}
-QTableView{
-    border:none;
-}
-QTableView::item{
-    border: none;
 }
