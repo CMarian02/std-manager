@@ -32,7 +32,7 @@ class MyApp(QtWidgets.QMainWindow):
         self.profcap_img = QtWidgets.QLabel(self.centralwidget)
         self.profcap_img.setGeometry(435, 120, 220, 180)
         self.profcap_img.setObjectName('profcap')
-        self.vers_text = QtWidgets.QLabel('v0.1.7', self.centralwidget)
+        self.vers_text = QtWidgets.QLabel('v0.1.8', self.centralwidget)
         self.vers_text.setGeometry(765, 630, 70, 20)
         self.vers_text.setObjectName('version_text')
         # intputs
@@ -53,10 +53,12 @@ class MyApp(QtWidgets.QMainWindow):
         self.btn_log.setObjectName('btn_log')
         self.btn_log.clicked.connect(self.check_user)
 
+    #when you press 'return', connect to function check_user()
     def keyPressEvent(self, event):
         if event.key() == QtCore.Qt.Key.Key_Enter or event.key() == QtCore.Qt.Key.Key_Return:
             self.check_user()
-            
+
+    #verify if inputs is valid in databases
     def check_user(self):
         conn = sqlite3.connect('data/users.db')
         cursor = conn.cursor()
@@ -102,6 +104,8 @@ class MyApp(QtWidgets.QMainWindow):
         cursor.close()
         conn.close()
 
+#If your account in database is 'first time' login on account, he push to reset password for security
+#In future this page was been costumize!
 class ResetPassword(QtWidgets.QFrame):
     def __init__(self, cnp_input):
         super().__init__()
@@ -156,7 +160,6 @@ class ResetPassword(QtWidgets.QFrame):
             print('<8 char.')
 
         # Insert new password in your DataBase file
-
         if Strong == True:
             conn = sqlite3.connect('data/users.db')
             cursor = conn.cursor()
@@ -168,12 +171,8 @@ class ResetPassword(QtWidgets.QFrame):
             self.close()
             self.main_app = AppWindow(self.inp_cnp.text(),self.group, self.year)
             self.main_app.show()
-            print('Your data is updated! Now you go to Main Page')
-
-        
 
 #Running App
-
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     with open('styles/style.css', 'r') as f:
