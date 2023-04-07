@@ -21,10 +21,11 @@ else:
     print('You app is done!')
 
 if check_dis == True:
+    fac = input('Enter Fac name (IEEIA/ETTI/AC/MEC/CH)')
     conn = sqlite3.connect('data/discipline.db')
     cursor =  conn.cursor()
     dis = []
-    for discipline in cursor.execute('SELECT "Name" FROM disciplines'):
+    for discipline in cursor.execute('SELECT "Name" FROM disciplines WHERE Fac = (?)', (fac,)):
         discipline = discipline[0].replace(" ", "_")
         dis.append(discipline)
 
