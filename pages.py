@@ -3,7 +3,7 @@ from PyQt6 import QtWidgets, QtCore, QtGui
 import sqlite3
 
 class AppWindow(QtWidgets.QMainWindow):
-    def __init__(self, cnp, group, year):
+    def __init__(self, get_cnp, get_group, get_year):
         super().__init__()
         self.setWindowTitle('STD-Manager')
         self.resize(1000,850)
@@ -27,7 +27,7 @@ class AppWindow(QtWidgets.QMainWindow):
         #self.table_border.setObjectName('table_border')
         self.fac_logo = QtWidgets.QLabel(self.centralwidget)
         self.fac_logo.setGeometry(0, 0, 80, 60)
-        self.put_logo(group)
+        self.put_logo(get_group)
 
         #buttons
         self.year1 = QtWidgets.QPushButton(self.centralwidget)
@@ -109,8 +109,10 @@ class AppWindow(QtWidgets.QMainWindow):
         self.header_email.setGeometry(770, 65, 200, 30)
         self.header_email.setObjectName('table_header')
         self.header_email.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.fill_table(year, cnp, group)
+        self.fill_table(get_year, get_cnp, get_group)
 
+    #Fill table with grades, discipline, teach and logo in corner.
+    # Here rebuild function, bsc you can't switch great year.
     def fill_table(self, year, cnp, group):
         
         if group[0] == '1':
@@ -131,7 +133,7 @@ class AppWindow(QtWidgets.QMainWindow):
         self.put_teach(year, faculty)       
         self.put_grade(year, faculty, cnp)
 
-
+    #Function to put discipline details
     def put_teach(self, year, fac):
         table_data = []
         j = 0
@@ -151,12 +153,12 @@ class AppWindow(QtWidgets.QMainWindow):
         cursor.close()
         conn.close()
         
-    
+    #Function to put grades in table
     def put_grade(self, year, fac, cnp):
         z = 0
-        i = 0
         dis_names = []
         grades = []
+        #connect to table for disciplines
         conn = sqlite3.connect('data/discipline.db')
         cursor = conn.cursor()
         for name in cursor.execute('SELECT "Name" FROM disciplines WHERE "YEAR" = (?) AND "SEM" = 1 AND Fac = (?)',(str(year), fac)):
@@ -167,7 +169,7 @@ class AppWindow(QtWidgets.QMainWindow):
         #connect to table for grades
         conn = sqlite3.connect('data/grades.db')
         cursor = conn.cursor()
-        for grade in cursor.execute('SELECT "{}", "{}", "{}", "{}", "{}" FROM grades WHERE CNP = ?'.format(dis_names[0], dis_names[1], dis_names[2], dis_names[3], dis_names[4]), (cnp,)):
+        for grade in cursor.execute('SELECT "{}", "{}", "{}", "{}", "{}" FROM grades WHERE CNP = ? AND Fac =?'.format(dis_names[0], dis_names[1], dis_names[2], dis_names[3], dis_names[4]), (cnp,fac, )):
                 grades.append(grade)
         for grade in grades:
             for grd in grade:
@@ -177,6 +179,7 @@ class AppWindow(QtWidgets.QMainWindow):
         cursor.close()
         conn.close()
 
+    #Function to put logo in left corner of window, with faculty.
     def put_logo(self, group):
         
         if group[0] == '1':
