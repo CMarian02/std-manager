@@ -34,22 +34,28 @@ class AppWindow(QtWidgets.QMainWindow):
         self.year1.setText('YEAR I')
         self.year1.setGeometry(130,0, 110, 60)
         self.year1.setObjectName('year_btn')
+        self.year1.clicked.connect(lambda: self.fill_table('1', get_cnp, get_group))
         self.year1.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.year2 = QtWidgets.QPushButton(self.centralwidget)
         self.year2.setText('YEAR II')
         self.year2.setGeometry(250,0, 110, 60)
         self.year2.setObjectName('year_btn')
+        self.year2.clicked.connect(lambda: self.fill_table('2', get_cnp, get_group))
         self.year2.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.year3 = QtWidgets.QPushButton(self.centralwidget)
         self.year3.setText('YEAR III')
         self.year3.setGeometry(370,0, 110, 60)
         self.year3.setObjectName('year_btn')
+        self.year3.clicked.connect(lambda: self.fill_table('3', get_cnp, get_group))
         self.year3.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.year4 = QtWidgets.QPushButton(self.centralwidget)
         self.year4.setText('YEAR IV')
         self.year4.setGeometry(490,0, 110, 60)
         self.year4.setObjectName('year_btn')
+        self.year4.clicked.connect(lambda: self.fill_table('4', get_cnp, get_group))
         self.year4.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+
+        #Today you can't use Year 5,6 and All Years, focus to develop for 4 year app.
         self.year5 = QtWidgets.QPushButton(self.centralwidget)
         self.year5.setText('YEAR V')
         self.year5.setGeometry(610,0, 110, 60)
@@ -86,7 +92,6 @@ class AppWindow(QtWidgets.QMainWindow):
         self.main_table = QtWidgets.QTableWidget(5, 4, self.centralwidget)
         self.main_table.setObjectName('table')
         self.main_table.setGeometry(100, 100, 880, 560)
-        #self.main_table.setHorizontalHeaderLabels(('Nume', 'Nota', 'Profesor', 'Email'))
         self.main_table.verticalHeader().setVisible(False)
         self.main_table.horizontalHeader().setVisible(False)
         self.main_table.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
@@ -114,22 +119,9 @@ class AppWindow(QtWidgets.QMainWindow):
     #Fill table with grades, discipline, teach and logo in corner.
     # Here rebuild function, bsc you can't switch great year.
     def fill_table(self, year, cnp, group):
-        
-        if group[0] == '1':
-            faculty = 'CH'
-        elif group[0] == '2':
-            faculty = 'MEC'
-        elif group[0] == '3':
-            faculty = 'CI'
-        elif group[0] == '4':
-            faculty = 'DIMA'
-        elif group[0] == '5':
-            faculty = 'ETTI'
-        elif group[0] == '6':
-            faculty = 'IEEIA'
-        elif group[0] == '7':
-            faculty = 'AC'
-    
+        faculty_map = {'1': 'CH', '2': 'MEC', '3': 'CI', '4': 'DIMA', '5': 'ETTI', '6': 'IEEIA', '7': 'AC'}
+        faculty = faculty_map.get(group[0], None)
+        self.btn_check(year)
         self.put_teach(year, faculty)       
         self.put_grade(year, faculty, cnp)
 
@@ -181,23 +173,16 @@ class AppWindow(QtWidgets.QMainWindow):
 
     #Function to put logo in left corner of window, with faculty.
     def put_logo(self, group):
-        
-        if group[0] == '1':
-            self.fac_logo.setObjectName('CH')
-        elif group[0] == '2':
-            self.fac_logo.setObjectName('MEC')
-        elif group[0] == '3':
-            self.fac_logo.setObjectName('CI')
-        elif group[0] == '4':
-            self.fac_logo.setObjectName('DIMA')
-        elif group[0] == '5':
-            self.fac_logo.setObjectName('ETTI')
-        elif group[0] == '6':
-            self.fac_logo.setObjectName('IEEIA')
-        elif group[0] == '7':
-            self.fac_logo.setObjectName('AC')
-        else:
-            self.fac_logo.setObjectName('app_logo')
+        faculty_map = {'1': 'CH', '2': 'MEC', '3': 'CI', '4': 'DIMA', '5': 'ETTI', '6': 'IEEIA', '7': 'AC'}
+        faculty = faculty_map.get(group[0], None)
+        self.fac_logo.setObjectName(faculty)
 
-
+    def btn_check(self, year):
         
+        btns = [self.year1, self.year2, self.year3, self.year4]
+        for i in range(4):
+            if year == str(i+1):
+                btns[i].setObjectName('year_btn_active')
+            else:
+                btns[i].setObjectName('year_btn')
+            btns[i].setStyleSheet('styles.css')

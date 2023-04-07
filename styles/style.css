@@ -115,12 +115,20 @@ QPushButton#btn_log:hover{
 
 QPushButton#year_btn{
     border-radius: 5px;
-    padding: 10px;
     color: white;
     background-color:#071120;
     font-family: Roboto;
     font-size: 12px;
     font-weight: 900;
+}
+
+QPushButton#year_btn_active{
+    color:red;
+    font-family: Roboto;
+    font-size: 12px;
+    font-weight: 900;
+    background-color: #071120;
+    border-radius: 5px;
 }
 /* Edit Table */
 QTableWidget{
