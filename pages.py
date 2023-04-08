@@ -13,80 +13,17 @@ class AppWindow(QtWidgets.QMainWindow):
         self.setCentralWidget(self.centralwidget)
         self.current_year = get_year
         #labels
-        self.icons_zone = QtWidgets.QLabel(self.centralwidget)
-        self.icons_zone.setGeometry(0, 0, 80, 700)
-        self.icons_zone.setObjectName('icons_zone')
-        self.select_zone = QtWidgets.QLabel(self.centralwidget)
-        self.select_zone.setGeometry(80 ,0, 1000, 60)
-        self.select_zone.setObjectName('select_zone')
         self.vers_text = QtWidgets.QLabel('version 0.1', self.centralwidget)
         self.vers_text.setGeometry(935, 680, 70, 20)
         self.vers_text.setObjectName('version_text')
         self.fac_logo = QtWidgets.QLabel(self.centralwidget)
         self.fac_logo.setGeometry(0, 0, 80, 60)
-        self.put_logo(get_group)
         self.semester = QtWidgets.QLabel(self.centralwidget)
         self.semester.setGeometry(500, 670, 60, 24)
         self.semester.setObjectName('semester_text')
+        self.put_logo(get_group) #put logo of your faculty
         #buttons
-        self.year1 = QtWidgets.QPushButton(self.centralwidget)
-        self.year1.setText('YEAR I')
-        self.year1.setGeometry(130,0, 110, 60)
-        self.year1.setObjectName('year_btn')
-        self.year1.clicked.connect(lambda: self.fill_table('1', get_cnp, get_group, '1'))
-        self.year1.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
-        self.year2 = QtWidgets.QPushButton(self.centralwidget)
-        self.year2.setText('YEAR II')
-        self.year2.setGeometry(250,0, 110, 60)
-        self.year2.setObjectName('year_btn')
-        self.year2.clicked.connect(lambda: self.fill_table('2', get_cnp, get_group, '1'))
-        self.year2.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
-        self.year3 = QtWidgets.QPushButton(self.centralwidget)
-        self.year3.setText('YEAR III')
-        self.year3.setGeometry(370,0, 110, 60)
-        self.year3.setObjectName('year_btn')
-        self.year3.clicked.connect(lambda: self.fill_table('3', get_cnp, get_group, '1'))
-        self.year3.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
-        self.year4 = QtWidgets.QPushButton(self.centralwidget)
-        self.year4.setText('YEAR IV')
-        self.year4.setGeometry(490,0, 110, 60)
-        self.year4.setObjectName('year_btn')
-        self.year4.clicked.connect(lambda: self.fill_table('4', get_cnp, get_group, '1'))
-        self.year4.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
-
-        #Today you can't use Year 5,6 and All Years, focus to develop for 4 year app.
-        self.year5 = QtWidgets.QPushButton(self.centralwidget)
-        self.year5.setText('YEAR V')
-        self.year5.setGeometry(610,0, 110, 60)
-        self.year5.setObjectName('year_btn')
-        self.year5.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
-        self.year6 = QtWidgets.QPushButton(self.centralwidget)
-        self.year6.setText('YEAR VI')
-        self.year6.setGeometry(730,0, 110, 60)
-        self.year6.setObjectName('year_btn')
-        self.year6.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
-        self.year7 = QtWidgets.QPushButton(self.centralwidget)
-        self.year7.setText('ALL YEARS')
-        self.year7.setGeometry(850,0, 110, 60)
-        self.year7.setObjectName('year_btn')
-        self.year7.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
-        #vertical buttons
-        self.btn1 = QtWidgets.QPushButton(self.centralwidget)
-        self.btn1.setGeometry(0, 160, 80, 80)
-        self.btn1.setObjectName('year_btn')
-        self.btn1.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
-        self.btn2 = QtWidgets.QPushButton(self.centralwidget)
-        self.btn2.setGeometry(0, 280, 80, 80)
-        self.btn2.setObjectName('year_btn')
-        self.btn2.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
-        self.btn3 = QtWidgets.QPushButton(self.centralwidget)
-        self.btn3.setGeometry(0, 400, 80, 80)
-        self.btn3.setObjectName('year_btn')
-        self.btn3.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
-        self.btn4 = QtWidgets.QPushButton(self.centralwidget)
-        self.btn4.setGeometry(0, 520, 80, 80)
-        self.btn4.setObjectName('year_btn')
-        self.btn4.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.make_buttons(get_cnp, get_group)
         #semester buttons
         self.left_switch = QtWidgets.QPushButton(self.centralwidget)
         self.left_switch.setGeometry(250, 670, 30, 24)
@@ -128,7 +65,62 @@ class AppWindow(QtWidgets.QMainWindow):
         self.header_email.setObjectName('table_header')
         self.header_email.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.fill_table(self.current_year, get_cnp, get_group, '1')
-
+    
+    def make_buttons(self, cnp, group):
+        self.year1 = QtWidgets.QPushButton(self.centralwidget)
+        self.year1.setText('YEAR I')
+        self.year1.setGeometry(130,0, 110, 60)
+        self.year1.setObjectName('year_btn')
+        self.year1.clicked.connect(lambda: self.fill_table('1', cnp, group, '1'))
+        self.year1.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.year2 = QtWidgets.QPushButton(self.centralwidget)
+        self.year2.setText('YEAR II')
+        self.year2.setGeometry(250,0, 110, 60)
+        self.year2.setObjectName('year_btn')
+        self.year2.clicked.connect(lambda: self.fill_table('2', cnp, group, '1'))
+        self.year2.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.year3 = QtWidgets.QPushButton(self.centralwidget)
+        self.year3.setText('YEAR III')
+        self.year3.setGeometry(370,0, 110, 60)
+        self.year3.setObjectName('year_btn')
+        self.year3.clicked.connect(lambda: self.fill_table('3', cnp, group, '1'))
+        self.year3.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.year4 = QtWidgets.QPushButton(self.centralwidget)
+        self.year4.setText('YEAR IV')
+        self.year4.setGeometry(490,0, 110, 60)
+        self.year4.setObjectName('year_btn')
+        self.year4.clicked.connect(lambda: self.fill_table('4', cnp, group, '1'))
+        self.year4.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        
+        #Today you can't use Year 5,6 and All Years, focus to develop for 4 year app.
+        self.year5 = QtWidgets.QPushButton(self.centralwidget)
+        self.year5.setText('YEAR V')
+        self.year5.setGeometry(610,0, 110, 60)
+        self.year5.setObjectName('year_btn')
+        self.year5.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.year6 = QtWidgets.QPushButton(self.centralwidget)
+        self.year6.setText('YEAR VI')
+        self.year6.setGeometry(730,0, 110, 60)
+        self.year6.setObjectName('year_btn')
+        self.year6.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.year7 = QtWidgets.QPushButton(self.centralwidget)
+        self.year7.setText('ALL YEARS')
+        self.year7.setGeometry(850,0, 110, 60)
+        self.year7.setObjectName('year_btn')
+        self.year7.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        #vertical buttons
+        self.grades = QtWidgets.QPushButton(self.centralwidget)
+        self.grades.setGeometry(10, 230, 80, 80)
+        self.grades.setText('GRADES')
+        self.grades.setObjectName('year_btn')
+        self.grades.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.average = QtWidgets.QPushButton(self.centralwidget)
+        self.average.setText('AVERAGE')
+        self.average.setGeometry(10, 455, 80, 80)
+        self.average.setObjectName('year_btn')
+        #self.average.clicked.connect(lambda: self.switch_frame(cnp, group))
+        self.average.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+    
     #Fill table with grades, discipline, teach and logo in corner.
     # Here rebuild function, bsc you can't switch great year.
     def fill_table(self, year, cnp, group, sem):
@@ -194,8 +186,8 @@ class AppWindow(QtWidgets.QMainWindow):
         faculty = faculty_map.get(group[0], None)
         self.fac_logo.setObjectName(faculty)
 
+    #Check if buttons is active
     def btn_check(self, year):
-        
         btns = [self.year1, self.year2, self.year3, self.year4]
         for i in range(4):
             if year == str(i+1):
@@ -204,3 +196,6 @@ class AppWindow(QtWidgets.QMainWindow):
             else:
                 btns[i].setObjectName('year_btn')
             btns[i].setStyleSheet('styles.css')
+    
+    def switch_frame(self,cnp,group):
+        pass
