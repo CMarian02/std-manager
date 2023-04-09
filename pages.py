@@ -24,7 +24,7 @@ class AppWindow(QtWidgets.QMainWindow):
         self.put_logo(get_group) #put logo of your faculty
         #buttons
         self.make_buttons(get_cnp, get_group)
-        #semester buttons
+          #semester buttons
         self.left_switch = QtWidgets.QPushButton(self.centralwidget)
         self.left_switch.setGeometry(250, 670, 30, 24)
         self.left_switch.setText('<<')
@@ -118,7 +118,6 @@ class AppWindow(QtWidgets.QMainWindow):
         self.average.setText('AVERAGE')
         self.average.setGeometry(10, 455, 80, 80)
         self.average.setObjectName('year_btn')
-        #self.average.clicked.connect(lambda: self.switch_frame(cnp, group))
         self.average.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
     
     #Fill table with grades, discipline, teach and logo in corner.
@@ -196,6 +195,3 @@ class AppWindow(QtWidgets.QMainWindow):
             else:
                 btns[i].setObjectName('year_btn')
             btns[i].setStyleSheet('styles.css')
-    
-    def switch_frame(self,cnp,group):
-        pass
