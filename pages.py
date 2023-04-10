@@ -3,8 +3,8 @@ from PyQt6 import QtWidgets, QtCore, QtGui
 import sqlite3
 
 class AppWindow(QtWidgets.QMainWindow):
-    def __init__(self, get_cnp, get_group, get_year):
-        super().__init__()
+    def __init__(self, get_cnp, get_group, get_year, parent = None):
+        super().__init__(parent)
         self.setWindowTitle('STD-Manager')
         self.resize(1000,850)
         self.setMinimumSize(QtCore.QSize(1000, 700))
@@ -36,9 +36,12 @@ class AppWindow(QtWidgets.QMainWindow):
         self.right_switch.setText('>>')
         self.right_switch.setObjectName('switch_sem')
         self.right_switch.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
-        self.right_switch.clicked.connect(lambda: self.fill_table(self.current_year, get_cnp, get_group, '2'))
-        
+        self.right_switch.clicked.connect(lambda: self.fill_table(self.current_year, get_cnp, get_group, '2'))      
         #Table
+        self.create_table()
+        self.fill_table(self.current_year, get_cnp, get_group, '1')
+    #Steps to create basic table for grades/name of discipline/ teacher name & e-mail.
+    def create_table(self):
         self.main_table = QtWidgets.QTableWidget(5, 4, self.centralwidget)
         self.main_table.setObjectName('table')
         self.main_table.setGeometry(100, 100, 880, 560)
@@ -64,8 +67,7 @@ class AppWindow(QtWidgets.QMainWindow):
         self.header_email.setGeometry(770, 65, 200, 30)
         self.header_email.setObjectName('table_header')
         self.header_email.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.fill_table(self.current_year, get_cnp, get_group, '1')
-    
+    #Function to make buttons to switch years and 'average page' to 'main page'.
     def make_buttons(self, cnp, group):
         self.year1 = QtWidgets.QPushButton(self.centralwidget)
         self.year1.setText('YEAR I')
@@ -118,6 +120,7 @@ class AppWindow(QtWidgets.QMainWindow):
         self.average.setText('AVERAGE')
         self.average.setGeometry(10, 455, 80, 80)
         self.average.setObjectName('year_btn')
+        self.average.clicked.connect(self.go_to_page)
         self.average.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
     
     #Fill table with grades, discipline, teach and logo in corner.
@@ -133,7 +136,7 @@ class AppWindow(QtWidgets.QMainWindow):
         self.put_teach(year, faculty, sem)       
         self.put_grade(year, faculty, cnp, sem)
 
-    #Function to put discipline details
+    #Function to put discipline details.
     def put_teach(self, year, fac, sem):
         table_data = []
         j = 0
@@ -153,7 +156,7 @@ class AppWindow(QtWidgets.QMainWindow):
         cursor.close()
         conn.close()
         
-    #Function to put grades in table
+    #Function to put grades in table.
     def put_grade(self, year, fac, cnp, sem):
         z = 0
         dis_names = []
@@ -185,7 +188,7 @@ class AppWindow(QtWidgets.QMainWindow):
         faculty = faculty_map.get(group[0], None)
         self.fac_logo.setObjectName(faculty)
 
-    #Check if buttons is active
+    #Check if buttons is active.
     def btn_check(self, year):
         btns = [self.year1, self.year2, self.year3, self.year4]
         for i in range(4):
