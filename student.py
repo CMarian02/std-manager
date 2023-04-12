@@ -49,6 +49,7 @@ class AppWindow(QtWidgets.QMainWindow):
         self.main_table.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.NoSelection)
         self.main_table.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Stretch)
         self.main_table.verticalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Stretch)
+        self.main_table.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         self.header_name = QtWidgets.QLabel('Name',self.centralwidget)
         self.header_name.setGeometry(110, 65, 200, 30)
         self.header_name.setObjectName('table_header')
@@ -256,6 +257,7 @@ class AveragePage(QtWidgets.QFrame):
         self.avg_table.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.NoSelection)
         self.avg_table.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Stretch)
         self.avg_table.verticalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Stretch)
+        self.avg_table.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         self.fill_table(get_cnp, self.current_year, get_group)
     
     #Function to switch to GradesPage.

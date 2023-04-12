@@ -42,6 +42,10 @@ QLabel#admin{
     background-image:url('img/admin.png');
 }
 
+QLabel#teacher{
+    background-image:url('img/teacher.png');
+}
+
 QLabel#profile_img{
     background-image:url('img/profile.png');
 } 
@@ -108,6 +112,10 @@ QLineEdit#input_logpg{
 }
 
 QLineEdit#input_logpg:hover{
+    border-bottom: 1.5px solid #c0c0c0;
+}
+
+QLineEdit#input_logpg:focus{
     border-bottom: 1.5px solid whitesmoke;
 }
 
@@ -115,13 +123,15 @@ QLineEdit#input_logpg:hover{
 /* Edit Buttons */
 QPushButton#btn_log{
     border-radius: 6px;
-    color: black;
+    color: #1b1b1b;
     font-weight: 900;
     background-color: whitesmoke;
 }
 
 QPushButton#btn_log:hover{
-    background-color:aliceblue;
+    background-color:#d4d4d4;
+    color: black;
+    border: 1px solid white;
 }
 
 QPushButton#year_btn{
@@ -155,16 +165,9 @@ QTableWidget{
     background-color:#0F4D3A;
     color: white;
     border:none;
+    font-size:15px;
     border-radius: 10px;
 }
-QTableWidget::item{
-    text-align:center;
-}
-QTableWidget::horizontalHeader {
-    background-color: blue;
-    color: white;
-}
-
 /* AVERAGE PAGE */
 
 QFrame#AVG{
