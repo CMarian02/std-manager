@@ -1,4 +1,4 @@
-import main
+import login
 from PyQt6 import QtWidgets, QtCore, QtGui
 import sqlite3
 

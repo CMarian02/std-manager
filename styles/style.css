@@ -38,44 +38,48 @@ QLabel#student_cap{
     background-image:url('img/std_cap.png');
 }
 
+QLabel#admin{
+    background-image:url('img/admin.png');
+}
+
 QLabel#profile_img{
     background-image:url('img/profile.png');
 } 
 
 QLabel#profcap{
-    background-image:url('img/prof_cap.png')
+    background-image:url('img/prof_cap.png');
 }
 
 QLabel#CH{
-    background-image:url('img/fac/CH.png')
+    background-image:url('img/fac/CH.png');
 }
 
 QLabel#MEC{
-    background-image:url('img/fac/MEC.png')
+    background-image:url('img/fac/MEC.png');
 }
 
 QLabel#CI{
-    background-image:url('img/fac/CI.png')
+    background-image:url('img/fac/CI.png');
 }
 
 QLabel#DIMA{
-    background-image: url('img/fac/DIMA.png')
+    background-image: url('img/fac/DIMA.png');
 }
 
 QLabel#ETTI{
-    background-image: url('img/fac/ETTI.png')
+    background-image: url('img/fac/ETTI.png');
 }
 
 QLabel#IEEIA{
-    background-image: url('img/fac/IEEIA.png')
+    background-image: url('img/fac/IEEIA.png');
 }
 
 QLabel#AC{
-    background-image: url('img/fac/AC.png')
+    background-image: url('img/fac/AC.png');
 }
 
 QLabel#app_logo{
-    background-image: url('img/app_logo.png')
+    background-image: url('img/app_logo.png');
 }
 
 QLabel#table_header{

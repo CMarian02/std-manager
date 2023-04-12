@@ -1,7 +1,7 @@
 from PyQt6 import QtWidgets, QtCore, QtGui
 import sqlite3
-from pages import *
-import sys
+from student import *
+import sys, time
 
 class MyApp(QtWidgets.QMainWindow):
     def __init__(self):
@@ -51,6 +51,10 @@ class MyApp(QtWidgets.QMainWindow):
         self.btn_log.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.btn_log.setObjectName('btn_log')
         self.btn_log.clicked.connect(self.check_user)
+        self.timer = QtCore.QTimer()
+        self.timer.timeout.connect(self.switch_logo)
+        self.timer.start(3000)
+        self.cst = 0
 
     #when you press 'return', connect to function check_user()
     def keyPressEvent(self, event):
@@ -69,6 +73,7 @@ class MyApp(QtWidgets.QMainWindow):
                 for pas in cursor.execute('SELECT Password FROM all_users WHERE "CNP" = (?)', (self.inp_cnp.text(),)):
                     vfy_pass = str(pas[0])
                 if vfy_pass == self.inp_pass.text():
+                    self.timer.stop()
                     for student in cursor.execute('SELECT Student FROM all_users WHERE "CNP" = (?)', (self.inp_cnp.text(),)):
                         is_student = student[0]
                     if is_student == "Yes":
@@ -102,7 +107,18 @@ class MyApp(QtWidgets.QMainWindow):
         conn.commit()
         cursor.close()
         conn.close()
-
+    def switch_logo(self):
+            self.cst += 1
+            if self.cst == 1:
+                self.std_img.setObjectName('student_cap')
+                self.std_img.setStyleSheet('styles/style.css')
+            elif self.cst == 2:
+                self.std_img.setObjectName('admin')
+                self.std_img.setStyleSheet('styles/style.css')
+            else:
+                self.std_img.setObjectName('teacher')
+                self.std_img.setStyleSheet('styles/style.css')
+                self.cst = 0
 #If your account in database is 'first time' login on account, he push to reset password for security
 #In future this page was been costumize!
 class ResetPassword(QtWidgets.QFrame):
