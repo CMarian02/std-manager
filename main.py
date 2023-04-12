@@ -32,7 +32,7 @@ class MyApp(QtWidgets.QMainWindow):
         self.profcap_img = QtWidgets.QLabel(self.centralwidget)
         self.profcap_img.setGeometry(435, 120, 220, 180)
         self.profcap_img.setObjectName('profcap')
-        self.vers_text = QtWidgets.QLabel('v0.1.8', self.centralwidget)
+        self.vers_text = QtWidgets.QLabel('v0.2.0', self.centralwidget)
         self.vers_text.setGeometry(765, 630, 70, 20)
         self.vers_text.setObjectName('version_text')
         # intputs
@@ -46,8 +46,7 @@ class MyApp(QtWidgets.QMainWindow):
         self.inp_pass.setObjectName('input_logpg')
         self.inp_pass.setEchoMode(QtWidgets.QLineEdit.EchoMode.Password)
         #buttons
-        self.btn_log = QtWidgets.QPushButton(self.centralwidget)
-        self.btn_log.setText('LOGIN')
+        self.btn_log = QtWidgets.QPushButton('LOGIN', self.centralwidget)
         self.btn_log.setGeometry(435, 460, 200, 50)
         self.btn_log.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.btn_log.setObjectName('btn_log')

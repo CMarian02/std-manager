@@ -160,3 +160,9 @@ QTableWidget::horizontalHeader {
     background-color: blue;
     color: white;
 }
+
+/* AVERAGE PAGE */
+
+QFrame#AVG{
+    background-color: #1a181b;
+}
