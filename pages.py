@@ -133,36 +133,38 @@ class AppWindow(QtWidgets.QMainWindow):
         
     #Function to put grades in table.
     def put_grade(self, year, fac, cnp, sem):
-        z = 0
+        #A function to close sqlite connection.
+        def c_close():
+            conn.commit()
+            cursor.close()
+            conn.close()
         dis_names = []
-        grades = []
         #connect to table for disciplines
         conn = sqlite3.connect('data/discipline.db')
         cursor = conn.cursor()
         for name in cursor.execute('SELECT "Name" FROM disciplines WHERE "YEAR" = (?) AND "SEM" = (?) AND Fac = (?)',(str(year), sem, fac)):
             dis_names.append(name[0].replace(' ', '_'))
-        conn.commit()
-        cursor.close()
-        conn.close()
+        c_close()
         #connect to table for grades
-        conn = sqlite3.connect('data/grades.db')
-        cursor = conn.cursor()
-        for grade in cursor.execute('SELECT "{}", "{}", "{}", "{}", "{}" FROM grades WHERE CNP = ? AND Fac =?'.format(dis_names[0], dis_names[1], dis_names[2], dis_names[3], dis_names[4]), (cnp,fac, )):
-                grades.append(grade)
-        for grade in grades:
-            for grd in grade:
-                self.main_table.setItem(z, 3, QtWidgets.QTableWidgetItem(grd))
-                z +=1
-        conn.commit()
-        cursor.close()
-        conn.close()
-
+        if len(dis_names) == 5:
+            grades = []
+            z = 0
+            conn = sqlite3.connect('data/grades.db')
+            cursor = conn.cursor()
+            for grade in cursor.execute('SELECT "{}", "{}", "{}", "{}", "{}" FROM grades WHERE CNP = ? AND Fac =?'.format(dis_names[0], dis_names[1], dis_names[2], dis_names[3], dis_names[4]), (cnp,fac, )):
+                    grades.append(grade)
+            for grade in grades:
+                for grd in grade:
+                    self.main_table.setItem(z, 3, QtWidgets.QTableWidgetItem(grd))
+                    z +=1
+            c_close()
+        else:
+            print('Your dis_names list is incomplete!')
     #Function to put logo in left corner of window, with faculty.
     def put_logo(self, group):
         faculty_map = {'1': 'CH', '2': 'MEC', '3': 'CI', '4': 'DIMA', '5': 'ETTI', '6': 'IEEIA', '7': 'AC'}
         faculty = faculty_map.get(group[0], None)
         self.fac_logo.setObjectName(faculty)
-
     #Check if buttons is active.
     def btn_check(self, year):
         btns = [self.year1, self.year2, self.year3, self.year4]
@@ -291,23 +293,27 @@ class AveragePage(QtWidgets.QFrame):
         self.avg_table.setItem(0, 2, QtWidgets.QTableWidgetItem(str(avg_y)))
     #Return grades for disciplines where you give sem, year, fac and cnp.
     def check_grades(self, cnp, year, sem, fac):
+        #A function to close sqlite connection.
+        def c_close():
+            conn.commit()
+            cursor.close()
+            conn.close()
         dis_names = []
         conn = sqlite3.connect('data/discipline.db')
         cursor = conn.cursor()
         for name in cursor.execute('SELECT "Name" FROM disciplines WHERE "YEAR" = (?) AND "SEM" = (?) AND Fac = (?)',(str(year), sem, fac)):
             dis_names.append(name[0].replace(' ', '_'))
-        conn.commit()
-        cursor.close()
-        conn.close()
-        grades = []
-        conn = sqlite3.connect('data/grades.db')
-        cursor = conn.cursor()
-        for grade in cursor.execute('SELECT "{}", "{}", "{}", "{}", "{}" FROM grades WHERE CNP = ? AND Fac =?'.format(dis_names[0], dis_names[1], dis_names[2], dis_names[3], dis_names[4]), (cnp,fac, )):
-                grades.append(grade)
-        conn.commit()
-        cursor.close()
-        conn.close()
-        return grades
+        c_close()
+        if len(dis_names) == 5:
+            grades = []
+            conn = sqlite3.connect('data/grades.db')
+            cursor = conn.cursor()
+            for grade in cursor.execute('SELECT "{}", "{}", "{}", "{}", "{}" FROM grades WHERE CNP = ? AND Fac =?'.format(dis_names[0], dis_names[1], dis_names[2], dis_names[3], dis_names[4]), (cnp,fac, )):
+                    grades.append(grade)
+            c_close
+            return grades
+        else:
+            print('Your dis_names list is incomplete!')
     #Return Average for grades you give.
     def check_average(self,grades_sem):
         average = 0
