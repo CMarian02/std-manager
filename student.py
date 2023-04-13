@@ -1,8 +1,7 @@
-import login
 from PyQt6 import QtWidgets, QtCore, QtGui
 import sqlite3
 
-class AppWindow(QtWidgets.QMainWindow):
+class GradesPage(QtWidgets.QMainWindow):
     def __init__(self, get_cnp, get_group, get_year):
         super().__init__()
         self.setWindowTitle('STD-Manager')
@@ -263,9 +262,9 @@ class AveragePage(QtWidgets.QFrame):
     #Function to switch to GradesPage.
     def move_page(self, cnp, group, year):
         self.close()
-        app = AppWindow(cnp, group, year)
+        app = GradesPage(cnp, group, year)
         app.show()
-    #Same functions from class AppWindow.
+    #Same functions from class GradesPage.
     def put_logo(self, group):
         faculty_map = {'1': 'CH', '2': 'MEC', '3': 'CI', '4': 'DIMA', '5': 'ETTI', '6': 'IEEIA', '7': 'AC'}
         faculty = faculty_map.get(group[0], None)
