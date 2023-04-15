@@ -68,7 +68,7 @@ class Main(QtWidgets.QMainWindow):
             self.mod_btn.setStyleSheet('styles.css')
         else:
             print('error, page not found!')
-        
+
 class AddPage(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
@@ -78,42 +78,36 @@ class AddPage(QtWidgets.QWidget):
         title.setObjectName('frame_title')
         f_name = QtWidgets.QLabel('FIRST NAME:', self)
         f_name.setGeometry(250, 220, 100, 20)
-        f_name.setObjectName('frame_text')
         l_name = QtWidgets.QLabel('LAST NAME:', self)
         l_name.setGeometry(254, 280, 100, 20)
-        l_name.setObjectName('frame_text')
         group = QtWidgets.QLabel('GROUP:', self)
         group.setGeometry(286, 340, 100, 20)
-        group.setObjectName('frame_text')
         discipline = QtWidgets.QLabel('DISCIPLINE:', self)
         discipline.setGeometry(253, 400, 100, 20)
-        discipline.setObjectName('frame_text')
         grade = QtWidgets.QLabel('GRADE:', self)
         grade.setGeometry(286, 460, 100, 20)
-        grade.setObjectName('frame_text')
         #inputs
         self.fname_inp = QtWidgets.QLineEdit(self)
-        self.fname_inp.setGeometry(350, 220, 200, 20)
-        self.fname_inp.setObjectName('frame_input')
         self.lname_inp = QtWidgets.QLineEdit(self)
-        self.lname_inp.setGeometry(350, 280, 200, 20)
-        self.lname_inp.setObjectName('frame_input')
         self.group_inp = QtWidgets.QLineEdit(self)
-        self.group_inp.setGeometry(350, 340, 200, 20)
-        self.group_inp.setObjectName('frame_input')
         self.group_inp.setMaxLength(4)
         self.disci_inp = QtWidgets.QLineEdit(self)
-        self.disci_inp.setGeometry(350, 400, 200, 20)
-        self.disci_inp.setObjectName('frame_input')
         self.grade_inp = QtWidgets.QLineEdit(self)
         self.grade_inp.setMaxLength(2)
-        self.grade_inp.setGeometry(350, 460, 200, 20)
-        self.grade_inp.setObjectName('frame_input')
         #buttons
         self.send_add = QtWidgets.QPushButton('ADD', self)
         self.send_add.setGeometry(450, 520, 150, 40)
         self.send_add.setObjectName('grades_btn')
-
+        #Create a function to put object name and geometry!
+        he = 220
+        input_list = [self.fname_inp, self.lname_inp, self.group_inp, self.disci_inp, self.grade_inp]
+        texts = [f_name, l_name, group, grade, discipline]
+        for item in input_list:
+            item.setObjectName('frame_input')
+            item.setGeometry(350, he, 200, 20)
+            he += 60
+        for item in texts:
+            item.setObjectName('frame_text')
 
 class DelPage(QtWidgets.QWidget):
     def __init__(self):
@@ -124,42 +118,37 @@ class DelPage(QtWidgets.QWidget):
         title.setObjectName('frame_title')
         f_name = QtWidgets.QLabel('FIRST NAME:', self)
         f_name.setGeometry(250, 220, 100, 20)
-        f_name.setObjectName('frame_text')
         l_name = QtWidgets.QLabel('LAST NAME:', self)
         l_name.setGeometry(254, 280, 100, 20)
-        l_name.setObjectName('frame_text')
         group = QtWidgets.QLabel('GROUP:', self)
         group.setGeometry(286, 340, 100, 20)
-        group.setObjectName('frame_text')
         discipline = QtWidgets.QLabel('DISCIPLINE:', self)
         discipline.setGeometry(253, 400, 100, 20)
-        discipline.setObjectName('frame_text')
         grade = QtWidgets.QLabel('GRADE:', self)
         grade.setGeometry(286, 460, 100, 20)
-        grade.setObjectName('frame_text')
         #inputs
         self.fname_inp = QtWidgets.QLineEdit(self)
-        self.fname_inp.setGeometry(350, 220, 200, 20)
-        self.fname_inp.setObjectName('frame_input')
         self.lname_inp = QtWidgets.QLineEdit(self)
-        self.lname_inp.setGeometry(350, 280, 200, 20)
-        self.lname_inp.setObjectName('frame_input')
         self.group_inp = QtWidgets.QLineEdit(self)
-        self.group_inp.setGeometry(350, 340, 200, 20)
-        self.group_inp.setObjectName('frame_input')
         self.group_inp.setMaxLength(4)
         self.disci_inp = QtWidgets.QLineEdit(self)
-        self.disci_inp.setGeometry(350, 400, 200, 20)
-        self.disci_inp.setObjectName('frame_input')
         self.grade_inp = QtWidgets.QLineEdit(self)
         self.grade_inp.setMaxLength(2)
-        self.grade_inp.setGeometry(350, 460, 200, 20)
-        self.grade_inp.setObjectName('frame_input')
         #buttons
         self.send_add = QtWidgets.QPushButton('DEL', self)
         self.send_add.setGeometry(450, 520, 150, 40)
         self.send_add.setObjectName('grades_btn')
-
+        #Create a function to put object name and geometry!
+        he = 220
+        input_list = [self.fname_inp, self.lname_inp, self.group_inp, self.disci_inp, self.grade_inp]
+        texts = [f_name, l_name, group, grade, discipline]
+        for item in input_list:
+            item.setObjectName('frame_input')
+            item.setGeometry(350, he, 200, 20)
+            he += 60
+        for item in texts:
+            item.setObjectName('frame_text')
+        
 class ModPage(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
@@ -169,43 +158,37 @@ class ModPage(QtWidgets.QWidget):
         title.setObjectName('frame_title')
         f_name = QtWidgets.QLabel('FIRST NAME:', self)
         f_name.setGeometry(250, 220, 100, 20)
-        f_name.setObjectName('frame_text')
         l_name = QtWidgets.QLabel('LAST NAME:', self)
         l_name.setGeometry(254, 280, 100, 20)
-        l_name.setObjectName('frame_text')
         group = QtWidgets.QLabel('GROUP:', self)
         group.setGeometry(286, 340, 100, 20)
-        group.setObjectName('frame_text')
         discipline = QtWidgets.QLabel('DISCIPLINE:', self)
         discipline.setGeometry(253, 400, 100, 20)
-        discipline.setObjectName('frame_text')
         grade = QtWidgets.QLabel('GRADE:', self)
         grade.setGeometry(286, 460, 100, 20)
-        grade.setObjectName('frame_text')
         #inputs
         self.fname_inp = QtWidgets.QLineEdit(self)
-        self.fname_inp.setGeometry(350, 220, 200, 20)
-        self.fname_inp.setObjectName('frame_input')
         self.lname_inp = QtWidgets.QLineEdit(self)
-        self.lname_inp.setGeometry(350, 280, 200, 20)
-        self.lname_inp.setObjectName('frame_input')
         self.group_inp = QtWidgets.QLineEdit(self)
-        self.group_inp.setGeometry(350, 340, 200, 20)
-        self.group_inp.setObjectName('frame_input')
         self.group_inp.setMaxLength(4)
         self.disci_inp = QtWidgets.QLineEdit(self)
-        self.disci_inp.setGeometry(350, 400, 200, 20)
-        self.disci_inp.setObjectName('frame_input')
         self.grade_inp = QtWidgets.QLineEdit(self)
         self.grade_inp.setMaxLength(2)
-        self.grade_inp.setGeometry(350, 460, 200, 20)
-        self.grade_inp.setObjectName('frame_input')
-        
         #buttons
         self.send_add = QtWidgets.QPushButton('MOD', self)
         self.send_add.setGeometry(450, 520, 150, 40)
         self.send_add.setObjectName('grades_btn')
-
+        #Create a function to put object name and geometry!
+        he = 220
+        input_list = [self.fname_inp, self.lname_inp, self.group_inp, self.disci_inp, self.grade_inp]
+        texts = [f_name, l_name, group, grade, discipline]
+        for item in input_list:
+            item.setObjectName('frame_input')
+            item.setGeometry(350, he, 200, 20)
+            he += 60
+        for item in texts:
+            item.setObjectName('frame_text')
+        
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     with open('styles/style.css', 'r') as f:
