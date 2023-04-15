@@ -54,8 +54,8 @@ class MyApp(QtWidgets.QMainWindow):
         self.btn_log.clicked.connect(self.check_user)
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.switch_logo)
-        self.timer.start(3000)
-        self.cst = 0
+        self.timer.start(2000)
+        self.cst = 1
 
     #when you press 'return', connect to function check_user()
     def keyPressEvent(self, event):
@@ -98,7 +98,7 @@ class MyApp(QtWidgets.QMainWindow):
                             self.setCentralWidget(reset_frame)
                         else:
                             self.close()
-                            self.main_app = TeachPg()
+                            self.main_app = Main()
                             self.main_app.show()
                             
                 else:
