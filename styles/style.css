@@ -173,3 +173,8 @@ QTableWidget{
 QFrame#AVG{
     background-color: #1a181b;
 }
+
+QLabel#a{
+    font-size:30px;
+    color: white;
+}
