@@ -35,23 +35,23 @@ QLabel#right_cont{
 }
 
 QLabel#student_cap{
-    background-image:url('img/std_cap.png');
+    background-image:url('img/login_register/std_cap.png');
 }
 
 QLabel#admin{
-    background-image:url('img/admin.png');
+    background-image:url('img/login_register/admin.png');
 }
 
 QLabel#teacher{
-    background-image:url('img/teacher.png');
+    background-image:url('img/login_register/teacher.png');
 }
 
 QLabel#profile_img{
-    background-image:url('img/profile.png');
+    background-image:url('img/login_register/profile.png');
 } 
 
 QLabel#profcap{
-    background-image:url('img/prof_cap.png');
+    background-image:url('img/login_register/prof_cap.png');
 }
 
 QLabel#CH{
@@ -170,11 +170,48 @@ QTableWidget{
 }
 /* AVERAGE PAGE */
 
-QFrame#AVG{
-    background-color: #1a181b;
+    /* Labels */
+
+QLabel#teachpg_left{
+    background-image: url('img/teach/left_logo.png');
 }
 
-QLabel#a{
-    font-size:30px;
+QLabel#frame_title{
+    color:white;
+    font-family: Bebas Neue;
+    font-size: 50px;
+}
+
+QLabel#frame_text{
+    color:white;
+    font-family: Bebas Neue;
+    font-size: 25px;
+}
+    /* Buttons */
+
+QPushButton#grades_btn{
+    color:white;
+    background-color:#0F4D3A;
+    border-radius: 10px;
+    font-family: Bebas Neue;
+    font-size: 18px;
+}
+QPushButton#grades_btn_active{
+    color:#531212;
+    background-color:#0F4D3A;
+    border-radius: 10px;
+    font-family: Bebas Neue;
+    font-size: 20px;
+}
+
+    /* Inputs */
+
+QLineEdit#frame_input{
     color: white;
+    font-family: Roboto;
+    font-size: 17px;
+    font-weight: 700;
+    background:transparent;
+    border: none;
+    border-bottom:1px solid #0F4D3A;
 }
