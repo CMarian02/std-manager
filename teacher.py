@@ -98,6 +98,7 @@ class AddPage(QtWidgets.QWidget):
         self.send_add = QtWidgets.QPushButton('ADD', self)
         self.send_add.setGeometry(450, 520, 150, 40)
         self.send_add.setObjectName('grades_btn')
+        self.send_add.clicked.connect(self.valid_entry)
         #Create a function to put object name and geometry!
         he = 220
         input_list = [self.fname_inp, self.lname_inp, self.group_inp, self.disci_inp, self.grade_inp]
@@ -108,6 +109,26 @@ class AddPage(QtWidgets.QWidget):
             he += 60
         for item in texts:
             item.setObjectName('frame_text')
+    def valid_entry(self):
+
+        user = take_data('data/users.db', self.fname_inp.text(), self.lname_inp.text(), self.group_inp.text())
+        if user:
+            pass
+        else:
+            print('User not found!')
+        dis = take_data('data/discipline.db', '', '', self.group_inp.text(), self.disci_inp.text(), False)
+        if dis:
+            pass
+        else:
+            print('Discipline not found!')
+        if self.grade_inp.text().isdigit() and int(self.grade_inp.text()) <= 10:
+            dis = dis.replace(' ', '_')
+            conn = sqlite3.connect('data/grades.db')
+            cursor = conn.cursor()
+            cursor.execute('UPDATE grades SET {} = ? WHERE CNP = ?'.format(dis), (self.grade_inp.text(), user))
+            conn.commit()
+            cursor.close()
+            conn.close()
 
 class DelPage(QtWidgets.QWidget):
     def __init__(self):
@@ -188,7 +209,39 @@ class ModPage(QtWidgets.QWidget):
             he += 60
         for item in texts:
             item.setObjectName('frame_text')
-        
+
+def take_data(path, fname, lname, group, discipline = '', valid = True):
+    conn = sqlite3.connect(path)
+    cursor = conn.cursor()
+    data = []
+    if valid == True:
+        for item in cursor.execute('SELECT CNP FROM all_users WHERE "First Name" = (?) AND "Last Name" = (?) AND "Group" = (?)', (fname, lname, group, )):
+            data.append(item[0])
+        if data:
+            conn.commit()
+            cursor.close()
+            conn.close()
+            return data[0]
+        else:
+            conn.commit()
+            cursor.close()
+            conn.close()
+            return None
+    else:
+        for item in cursor.execute('SELECT Name FROM disciplines WHERE Name = ? AND Year = ?',(discipline, group[1])):
+            data.append(item[0])
+        if data:
+            conn.commit()
+            cursor.close()
+            conn.close()
+            return data[0]
+        else:
+            conn.commit()
+            cursor.close()
+            conn.close()
+            return None
+
+
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     with open('styles/style.css', 'r') as f:
