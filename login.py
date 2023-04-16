@@ -97,8 +97,15 @@ class MyApp(QtWidgets.QMainWindow):
                             reset_frame = ResetPassword(self.inp_cnp.text())
                             self.setCentralWidget(reset_frame)
                         else:
+                            teach_dis = []
+                            for dis in cursor.execute('SELECT Discipline FROM all_users WHERE "CNP" = (?)', (self.inp_cnp.text(),)):
+                                teach_dis.append(dis[0])
+                            if teach_dis:
+                                teach_dis = teach_dis[0].split(',')
+                            else:
+                                print('your disciplines not found!')
                             self.close()
-                            self.main_app = Main()
+                            self.main_app = Main(teach_dis)
                             self.main_app.show()
                             
                 else:

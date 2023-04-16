@@ -3,15 +3,15 @@ import sqlite3, sys
 
 class Main(QtWidgets.QMainWindow):
 
-    def __init__(self):
+    def __init__(self, teach_dis):
         super().__init__()
         self.setWindowTitle('STD-Manager')
         self.resize(1000,700)
         self.setMinimumSize(QtCore.QSize(1000, 700))
         self.setMaximumSize(QtCore.QSize(1000, 700))
-        self.add_page = AddPage()
-        self.del_page = DelPage()
-        self.mod_page = ModPage()
+        self.add_page = AddPage(teach_dis)
+        self.del_page = DelPage(teach_dis)
+        self.mod_page = ModPage(teach_dis)
         self.stack_container = QtWidgets.QStackedWidget()
         self.setCentralWidget(self.stack_container)
         self.stack_container.addWidget(self.add_page)
@@ -70,7 +70,7 @@ class Main(QtWidgets.QMainWindow):
             print('error, page not found!')
 
 class AddPage(QtWidgets.QWidget):
-    def __init__(self):
+    def __init__(self, teach_dis):
         super().__init__()
         #labels
         title = QtWidgets.QLabel('ADDING GRADES', self)
@@ -98,7 +98,7 @@ class AddPage(QtWidgets.QWidget):
         self.send_add = QtWidgets.QPushButton('ADD', self)
         self.send_add.setGeometry(450, 520, 150, 40)
         self.send_add.setObjectName('grades_btn')
-        self.send_add.clicked.connect(self.valid_entry)
+        self.send_add.clicked.connect(lambda: self.valid_entry(teach_dis))
         #Create a function to put object name and geometry!
         he = 220
         input_list = [self.fname_inp, self.lname_inp, self.group_inp, self.disci_inp, self.grade_inp]
@@ -109,29 +109,33 @@ class AddPage(QtWidgets.QWidget):
             he += 60
         for item in texts:
             item.setObjectName('frame_text')
-    def valid_entry(self):
-
+            
+    def valid_entry(self, teach_dis):
         user = take_data('data/users.db', self.fname_inp.text(), self.lname_inp.text(), self.group_inp.text())
+        dis = take_data('data/discipline.db', '', '', self.group_inp.text(), self.disci_inp.text(), False)
         if user:
-            pass
+            if dis:
+                if self.disci_inp.text() in teach_dis:
+                    if self.grade_inp.text().isdigit() and int(self.grade_inp.text()) <= 10:
+                        dis = dis.replace(' ', '_')
+                        conn = sqlite3.connect('data/grades.db')
+                        cursor = conn.cursor()
+                        cursor.execute('UPDATE grades SET {} = ? WHERE CNP = ?'.format(dis), (self.grade_inp.text(), user))
+                        print('You updated student grade.')
+                        conn.commit()
+                        cursor.close()
+                        conn.close()
+                    else:
+                        print('you enter a string or your number is not valid bsc is > 10')
+                else:
+                    print(f'Your disciplines is not {self.disci_inp.text()}')
+            else:
+                print('Discipline not found!')
         else:
             print('User not found!')
-        dis = take_data('data/discipline.db', '', '', self.group_inp.text(), self.disci_inp.text(), False)
-        if dis:
-            pass
-        else:
-            print('Discipline not found!')
-        if self.grade_inp.text().isdigit() and int(self.grade_inp.text()) <= 10:
-            dis = dis.replace(' ', '_')
-            conn = sqlite3.connect('data/grades.db')
-            cursor = conn.cursor()
-            cursor.execute('UPDATE grades SET {} = ? WHERE CNP = ?'.format(dis), (self.grade_inp.text(), user))
-            conn.commit()
-            cursor.close()
-            conn.close()
 
 class DelPage(QtWidgets.QWidget):
-    def __init__(self):
+    def __init__(self, teach_dis):
         super().__init__()
         #labels
         title = QtWidgets.QLabel('DELETE GRADES', self)
@@ -171,7 +175,7 @@ class DelPage(QtWidgets.QWidget):
             item.setObjectName('frame_text')
         
 class ModPage(QtWidgets.QWidget):
-    def __init__(self):
+    def __init__(self, teach_dis):
         super().__init__()
         #labels
         title = QtWidgets.QLabel('MODIFY GRADES', self)
@@ -247,6 +251,6 @@ if __name__ == '__main__':
     with open('styles/style.css', 'r') as f:
         stylesheet = f.read()
     app.setStyleSheet(stylesheet)
-    window = Main()
+    window = Main(teach_dis=['Materie ETTI An 1 1', 'Materie ETTI An 1 2'])
     window.show()
     sys.exit(app.exec())
