@@ -105,7 +105,7 @@ class MyApp(QtWidgets.QMainWindow):
                             else:
                                 print('your disciplines not found!')
                             self.close()
-                            self.main_app = Main(teach_dis)
+                            self.main_app = Main(teach_dis, self.inp_cnp.text())
                             self.main_app.show()
                             
                 else:

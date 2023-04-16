@@ -1,15 +1,15 @@
 from PyQt6 import QtWidgets, QtCore, QtGui
 import sqlite3, sys
-
+from datetime import datetime
 class Main(QtWidgets.QMainWindow):
 
-    def __init__(self, teach_dis):
+    def __init__(self, teach_dis, cnp):
         super().__init__()
         self.setWindowTitle('STD-Manager')
         self.resize(1000,700)
         self.setMinimumSize(QtCore.QSize(1000, 700))
         self.setMaximumSize(QtCore.QSize(1000, 700))
-        self.add_page = AddPage(teach_dis)
+        self.add_page = AddPage(teach_dis, cnp)
         self.del_page = DelPage(teach_dis)
         self.mod_page = ModPage(teach_dis)
         self.stack_container = QtWidgets.QStackedWidget()
@@ -70,7 +70,7 @@ class Main(QtWidgets.QMainWindow):
             print('error, page not found!')
 
 class AddPage(QtWidgets.QWidget):
-    def __init__(self, teach_dis):
+    def __init__(self, teach_dis, cnp):
         super().__init__()
         #labels
         title = QtWidgets.QLabel('ADDING GRADES', self)
@@ -98,7 +98,7 @@ class AddPage(QtWidgets.QWidget):
         self.send_add = QtWidgets.QPushButton('ADD', self)
         self.send_add.setGeometry(450, 520, 150, 40)
         self.send_add.setObjectName('grades_btn')
-        self.send_add.clicked.connect(lambda: self.valid_entry(teach_dis))
+        self.send_add.clicked.connect(lambda: self.valid_entry(teach_dis, cnp))
         #Create a function to put object name and geometry!
         he = 220
         input_list = [self.fname_inp, self.lname_inp, self.group_inp, self.disci_inp, self.grade_inp]
@@ -109,8 +109,8 @@ class AddPage(QtWidgets.QWidget):
             he += 60
         for item in texts:
             item.setObjectName('frame_text')
-            
-    def valid_entry(self, teach_dis):
+
+    def valid_entry(self, teach_dis, cnp):
         user = take_data('data/users.db', self.fname_inp.text(), self.lname_inp.text(), self.group_inp.text())
         dis = take_data('data/discipline.db', '', '', self.group_inp.text(), self.disci_inp.text(), False)
         if user:
@@ -121,7 +121,11 @@ class AddPage(QtWidgets.QWidget):
                         conn = sqlite3.connect('data/grades.db')
                         cursor = conn.cursor()
                         cursor.execute('UPDATE grades SET {} = ? WHERE CNP = ?'.format(dis), (self.grade_inp.text(), user))
-                        print('You updated student grade.')
+                        log = open("teach_log.txt", "a")
+                        now = datetime.now()
+                        dateANDtime = now.strftime("%d/%m/%Y %H:%M:%S")
+                        log.write(f"[{dateANDtime}] {cnp} changed student {self.fname_inp.text()} {self.lname_inp.text()} grade in discipline {self.disci_inp.text()}.His new grade is {self.grade_inp.text()}.\n")
+                        log.close()
                         conn.commit()
                         cursor.close()
                         conn.close()
@@ -251,6 +255,6 @@ if __name__ == '__main__':
     with open('styles/style.css', 'r') as f:
         stylesheet = f.read()
     app.setStyleSheet(stylesheet)
-    window = Main(teach_dis=['Materie ETTI An 1 1', 'Materie ETTI An 1 2'])
+    window = Main(teach_dis=['Materie ETTI An 1 1', 'Materie ETTI An 1 2'], cnp = 'randomcnp')
     window.show()
     sys.exit(app.exec())
