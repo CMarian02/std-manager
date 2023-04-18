@@ -1,6 +1,7 @@
 from PyQt6 import QtWidgets, QtCore, QtGui
 import sqlite3, sys
 from random import randint
+from datetime import datetime
 
 class MainWindow(QtWidgets.QMainWindow):
 
@@ -29,11 +30,29 @@ class MainWindow(QtWidgets.QMainWindow):
         self.addBtn = QtWidgets.QPushButton('Adding', self)
         self.addBtn.setGeometry(10, 200, 100, 50)
         self.addBtn.setObjectName('grades_btn_active')
+        self.addBtn.clicked.connect(lambda: self.switch_frame(1))
         self.addBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.delBtn = QtWidgets.QPushButton('Deleting', self)
         self.delBtn.setGeometry(10, 350, 100, 50)
         self.delBtn.setObjectName('grades_btn')
+        self.delBtn.clicked.connect(lambda: self.switch_frame(2))
         self.delBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+    
+    def switch_frame(self, page):
+        if page == 2:
+            self.stack_container.setCurrentWidget(self.delete)
+            self.addBtn.setObjectName('grades_btn')
+            self.addBtn.setStyleSheet('styles.css')
+            self.delBtn.setObjectName('grades_btn_active')
+            self.delBtn.setStyleSheet('styles.css')
+        elif page == 1:
+            self.stack_container.setCurrentWidget(self.add)
+            self.addBtn.setObjectName('grades_btn_active')
+            self.addBtn.setStyleSheet('styles.css')
+            self.delBtn.setObjectName('grades_btn')
+            self.delBtn.setStyleSheet('styles.css')
+        else:
+            print('error, page not found!')
 
 class AddNew(QtWidgets.QFrame):
     
@@ -94,7 +113,62 @@ class Delete(QtWidgets.QFrame):
     
     def __init__(self):
         super().__init__()
+        #labels
+        cnp = QtWidgets.QLabel('Account CNP:', self)
+        cnp.setGeometry(320, 210, 150, 20)
+        cnp.setObjectName('frame_text')
+        res = QtWidgets.QLabel('Reason:', self)
+        res.setGeometry(365, 270, 150, 20)
+        res.setObjectName('frame_text')
 
+        #inputs
+        self.cnp_inp = QtWidgets.QLineEdit(self)
+        self.cnp_inp.setGeometry(450, 200, 200, 40)
+        self.cnp_inp.setObjectName('frame_input')
+        self.res_inp = QtWidgets.QLineEdit(self)
+        self.res_inp.setGeometry(450, 260, 200, 40)
+        self.res_inp.setObjectName('frame_input')
+
+        #buttons
+
+        self.delBtn = QtWidgets.QPushButton('DELETE',self)
+        self.delBtn.setGeometry(450, 320, 200, 60)
+        self.delBtn.setObjectName('grades_btn')
+        self.delBtn.clicked.connect(self.delete_entry)
+        self.delBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+
+    def delete_entry(self):
+
+        if self.cnp_inp.text().isdigit() and len(self.cnp_inp.text()) == 13:
+            conn = sqlite3.connect('data/users.db')
+            cursor = conn.cursor()
+            cnp = []
+            for c in cursor.execute('SELECT CNP FROM all_users WHERE CNP = (?)', (self.cnp_inp.text(),)):
+                cnp.append(c)
+            if cnp:
+                print(cnp)
+                if len(self.res_inp.text()) > 3:
+                    adm_log = open('logs/adm_log.txt', 'a')
+                    now = datetime.now()
+                    dateANDtime = now.strftime("%d/%m/%Y %H:%M:%S")
+                    adm_log.write(f'[{dateANDtime}] Admin delete {self.cnp_inp.text()}. Reason: {self.res_inp.text()}\n')
+                    adm_log.close()
+                    cursor.execute('DELETE FROM all_users WHERE CNP =(?)', (self.cnp_inp.text(),))
+                    conn.commit()
+                    cursor.close()
+                    conn.close()
+                    conn = sqlite3.connect('data/grades.db')
+                    cursor = conn.cursor()
+                    cursor.execute('DELETE FROM grades WHERE CNP = (?)', (self.cnp_inp.text(), ))
+                    conn.commit()
+                    cursor.close()
+                    conn.close()
+                else:
+                    print('Reason to short, you must enter 3 characters.')
+            else:
+                print('This CNP is not in the database.')
+        else:
+            print("You don't enter a CNP.")       
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
