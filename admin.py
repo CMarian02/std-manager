@@ -108,7 +108,15 @@ class AddNew(QtWidgets.QFrame):
         conn.commit()
         cursor.close()
         conn.close()
-
+        conn = sqlite3.connect('data/grades.db')
+        cursor = conn.cursor()
+        faculty_map = {'1': 'CH', '2': 'MEC', '3': 'CI', '4': 'DIMA', '5': 'ETTI', '6': 'IEEIA', '7': 'AC'}
+        fac = faculty_map.get(self.group_inp.text()[0], None)
+        cursor.execute('INSERT INTO grades ("CNP", "Fac") VALUES (?, ?)', (self.cnp_inp.text(), fac, ))
+        conn.commit()
+        cursor.close()
+        conn.close()
+        
 class Delete(QtWidgets.QFrame):
     
     def __init__(self):
