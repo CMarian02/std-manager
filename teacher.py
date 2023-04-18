@@ -121,7 +121,7 @@ class AddPage(QtWidgets.QWidget):
                         conn = sqlite3.connect('data/grades.db')
                         cursor = conn.cursor()
                         cursor.execute('UPDATE grades SET {} = ? WHERE CNP = ?'.format(dis), (self.grade_inp.text(), user))
-                        log = open("teach_log.txt", "a")
+                        log = open("logs/teach_log.txt", "a")
                         now = datetime.now()
                         dateANDtime = now.strftime("%d/%m/%Y %H:%M:%S")
                         log.write(f"[{dateANDtime}] {cnp} changed student {self.fname_inp.text()} {self.lname_inp.text()} grade in discipline {self.disci_inp.text()}.His new grade is {self.grade_inp.text()}.\n")
