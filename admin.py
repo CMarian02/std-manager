@@ -181,7 +181,52 @@ class Delete(QtWidgets.QFrame):
 class Discipline(QtWidgets.QFrame):
     def __init__(self):
         super().__init__()
+        #labels
+        dis = QtWidgets.QLabel('DISCIPLINE:', self)
+        dis.setGeometry(320, 210, 150, 20)
+        year = QtWidgets.QLabel('Year:', self)
+        year.setGeometry(363, 270, 150, 20)
+        sem = QtWidgets.QLabel('SEMESTER:', self)
+        sem.setGeometry(325, 330, 150, 20)
+        teach = QtWidgets.QLabel('Teacher:', self)
+        teach.setGeometry(335, 400, 150, 20)
+        teach_email = QtWidgets.QLabel('EMAIL:', self)
+        teach_email.setGeometry(355, 460, 150, 20)
+        faculty = QtWidgets.QLabel('FACULTY:', self)
+        faculty.setGeometry(340, 520, 150, 20)
+        for item in [dis, year, sem, teach, teach_email, faculty]:
+            item.setObjectName('frame_text')
+        #inputs
+        self.dis_inp = QtWidgets.QLineEdit(self)
+        self.year_inp = QtWidgets.QLineEdit(self)
+        self.year_inp.setMaxLength(4)
+        self.sem_inp = QtWidgets.QLineEdit(self)
+        self.sem_inp.setMaxLength(1)
+        self.teach_inp = QtWidgets.QLineEdit(self)
+        self.email_inp = QtWidgets.QLineEdit(self)
+        self.fac_inp = QtWidgets.QLineEdit(self)
+        he = 200
+        for item in [self.dis_inp, self.year_inp, self.sem_inp, self.teach_inp, self.email_inp, self.fac_inp]:
+            item.setGeometry(450, he, 200, 40)
+            item.setObjectName('frame_input')
+            he += 60
+        #buttons
+        self.addBtn = QtWidgets.QPushButton('ADD',self)
+        self.addBtn.setGeometry(450, 580, 200, 60)
+        self.addBtn.setObjectName('grades_btn')
+        self.addBtn.clicked.connect(self.add_dis)
+        self.addBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        
+    def add_dis(self):
 
+        conn = sqlite3.connect('data/discipline.db')
+        cursor = conn.cursor()
+        cursor.execute('INSERT INTO disciplines ("Name", "Year", "SEM", "Teacher", "E-mail", "Fac") VALUES (?,?,?,?,?,?)', (self.dis_inp.text(), self.year_inp.text(), self.sem_inp.text(), self.teach_inp.text(), self.email_inp.text(), self.fac_inp.text(), ))
+        close_db(conn, cursor)
+        conn = sqlite3.connect('data/grades.db')
+        cursor = conn.cursor()
+        cursor.execute('ALTER TABLE grades ADD COLUMN {} TEXT'.format(self.dis_inp.text().replace(' ', '_')))
+        close_db(conn, cursor)
 
 
 if __name__ == '__main__':
