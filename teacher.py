@@ -1,5 +1,6 @@
 from PyQt6 import QtWidgets, QtCore, QtGui
 import sqlite3, sys
+from fast_func import *
 from datetime import datetime
 class Main(QtWidgets.QMainWindow):
 
@@ -40,32 +41,29 @@ class Main(QtWidgets.QMainWindow):
         self.mod_btn.setGeometry(10, 500, 100, 50)
         self.mod_btn.setObjectName('grades_btn')
         self.mod_btn.clicked.connect(lambda: self.switch_frame(3))
-
+    #This is function to switch frames.
     def switch_frame(self, page):
         if page == 2:
             self.stack_container.setCurrentWidget(self.del_page)
-            self.add_btn.setObjectName('grades_btn')
-            self.add_btn.setStyleSheet('styles.css')
             self.del_btn.setObjectName('grades_btn_active')
-            self.del_btn.setStyleSheet('styles.css')
-            self.mod_btn.setObjectName('grades_btn')
-            self.mod_btn.setStyleSheet('styles.css')
+            self.del_btn.setStyleSheet('style.css')
+            for item in [self.add_btn, self.mod_btn]:
+                item.setObjectName('grades_btn')
+                item.setStyleSheet('style.css')
         elif page == 1:
             self.stack_container.setCurrentWidget(self.add_page)
             self.add_btn.setObjectName('grades_btn_active')
-            self.add_btn.setStyleSheet('styles.css')
-            self.del_btn.setObjectName('grades_btn')
-            self.del_btn.setStyleSheet('styles.css')
-            self.mod_btn.setObjectName('grades_btn')
-            self.mod_btn.setStyleSheet('styles.css')
+            self.add_btn.setStyleSheet('style.css')
+            for item in [self.del_btn, self.mod_btn]:
+                item.setObjectName('grades_btn')
+                item.setStyleSheet('style.css')
         elif page == 3:
             self.stack_container.setCurrentWidget(self.mod_page)
-            self.add_btn.setObjectName('grades_btn')
-            self.add_btn.setStyleSheet('styles.css')
-            self.del_btn.setObjectName('grades_btn')
-            self.del_btn.setStyleSheet('styles.css')
             self.mod_btn.setObjectName('grades_btn_active')
-            self.mod_btn.setStyleSheet('styles.css')
+            self.mod_btn.setStyleSheet('style.css')
+            for item in [self.del_btn, self.add_btn]:
+                item.setObjectName('grades_btn')
+                item.setStyleSheet('style.css')
         else:
             print('error, page not found!')
 
@@ -101,15 +99,14 @@ class AddPage(QtWidgets.QWidget):
         self.send_add.clicked.connect(lambda: self.valid_entry(teach_dis, cnp))
         #Create a function to put object name and geometry!
         he = 220
-        input_list = [self.fname_inp, self.lname_inp, self.group_inp, self.disci_inp, self.grade_inp]
-        texts = [f_name, l_name, group, grade, discipline]
-        for item in input_list:
+        for item in [self.fname_inp, self.lname_inp, self.group_inp, self.disci_inp, self.grade_inp]:
             item.setObjectName('frame_input')
             item.setGeometry(350, he, 200, 20)
             he += 60
-        for item in texts:
+        for item in [f_name, l_name, group, grade, discipline]:
             item.setObjectName('frame_text')
 
+    # A basic function to validate if your enter is in data geted after
     def valid_entry(self, teach_dis, cnp):
         user = take_data('data/users.db', self.fname_inp.text(), self.lname_inp.text(), self.group_inp.text())
         dis = take_data('data/discipline.db', '', '', self.group_inp.text(), self.disci_inp.text(), False)
@@ -126,9 +123,7 @@ class AddPage(QtWidgets.QWidget):
                         dateANDtime = now.strftime("%d/%m/%Y %H:%M:%S")
                         log.write(f"[{dateANDtime}] {cnp} changed student {self.fname_inp.text()} {self.lname_inp.text()} grade in discipline {self.disci_inp.text()}.His new grade is {self.grade_inp.text()}.\n")
                         log.close()
-                        conn.commit()
-                        cursor.close()
-                        conn.close()
+                        close_db(conn, cursor)
                     else:
                         print('you enter a string or your number is not valid bsc is > 10')
                 else:
@@ -137,7 +132,7 @@ class AddPage(QtWidgets.QWidget):
                 print('Discipline not found!')
         else:
             print('User not found!')
-
+#SamePage with Add, and probably like ModPage this deleted, bcs you can edit grade in '0' to make null.
 class DelPage(QtWidgets.QWidget):
     def __init__(self, teach_dis):
         super().__init__()
@@ -169,15 +164,14 @@ class DelPage(QtWidgets.QWidget):
         self.send_add.setObjectName('grades_btn')
         #Create a function to put object name and geometry!
         he = 220
-        input_list = [self.fname_inp, self.lname_inp, self.group_inp, self.disci_inp, self.grade_inp]
-        texts = [f_name, l_name, group, grade, discipline]
-        for item in input_list:
+        for item in [self.fname_inp, self.lname_inp, self.group_inp, self.disci_inp, self.grade_inp]:
             item.setObjectName('frame_input')
             item.setGeometry(350, he, 200, 20)
             he += 60
-        for item in texts:
+        for item in [f_name, l_name, group, grade, discipline]:
             item.setObjectName('frame_text')
-        
+
+#Probably delete, because you can update from AddPage!
 class ModPage(QtWidgets.QWidget):
     def __init__(self, teach_dis):
         super().__init__()
@@ -209,15 +203,14 @@ class ModPage(QtWidgets.QWidget):
         self.send_add.setObjectName('grades_btn')
         #Create a function to put object name and geometry!
         he = 220
-        input_list = [self.fname_inp, self.lname_inp, self.group_inp, self.disci_inp, self.grade_inp]
-        texts = [f_name, l_name, group, grade, discipline]
-        for item in input_list:
+        for item in [self.fname_inp, self.lname_inp, self.group_inp, self.disci_inp, self.grade_inp]:
             item.setObjectName('frame_input')
             item.setGeometry(350, he, 200, 20)
             he += 60
-        for item in texts:
+        for item in [f_name, l_name, group, grade, discipline]:
             item.setObjectName('frame_text')
 
+#Function to get data from database files
 def take_data(path, fname, lname, group, discipline = '', valid = True):
     conn = sqlite3.connect(path)
     cursor = conn.cursor()
@@ -226,30 +219,23 @@ def take_data(path, fname, lname, group, discipline = '', valid = True):
         for item in cursor.execute('SELECT CNP FROM all_users WHERE "First Name" = (?) AND "Last Name" = (?) AND "Group" = (?)', (fname, lname, group, )):
             data.append(item[0])
         if data:
-            conn.commit()
-            cursor.close()
-            conn.close()
+            close_db(conn, cursor)
             return data[0]
         else:
-            conn.commit()
-            cursor.close()
-            conn.close()
+            close_db(conn, cursor)
             return None
     else:
         for item in cursor.execute('SELECT Name FROM disciplines WHERE Name = ? AND Year = ?',(discipline, group[1])):
             data.append(item[0])
         if data:
-            conn.commit()
-            cursor.close()
-            conn.close()
+            close_db(conn, cursor)
             return data[0]
         else:
-            conn.commit()
-            cursor.close()
-            conn.close()
+            close_db(conn, cursor)
             return None
+#Simple function to close connection with database.
 
-
+#Run app faster.
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     with open('styles/style.css', 'r') as f:

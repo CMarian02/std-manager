@@ -1,6 +1,6 @@
 from PyQt6 import QtWidgets, QtCore, QtGui
 import sqlite3, sys
-from random import randint
+from fast_func import *
 from datetime import datetime
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -13,10 +13,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setMaximumSize(QtCore.QSize(1000, 700))
         self.add = AddNew()
         self.delete = Delete()
+        self.dis = Discipline()
         self.stack_container = QtWidgets.QStackedWidget()
         self.setCentralWidget(self.stack_container)
         self.stack_container.addWidget(self.add)
         self.stack_container.addWidget(self.delete)
+        self.stack_container.addWidget(self.dis)
         self.stack_container.setCurrentWidget(self.add)
         #labels
         self.vers_text = QtWidgets.QLabel('v0.2.0', self)
@@ -25,7 +27,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.left_logo = QtWidgets.QLabel(self)
         self.left_logo.setGeometry(20, 20, 80, 60)
         self.left_logo.setObjectName('admin_left')
-        
         #buttons
         self.addBtn = QtWidgets.QPushButton('Adding', self)
         self.addBtn.setGeometry(10, 200, 100, 50)
@@ -37,22 +38,35 @@ class MainWindow(QtWidgets.QMainWindow):
         self.delBtn.setObjectName('grades_btn')
         self.delBtn.clicked.connect(lambda: self.switch_frame(2))
         self.delBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
-    
+        self.disBtn = QtWidgets.QPushButton('Discipline', self)
+        self.disBtn.setGeometry(10, 500, 100, 50)
+        self.disBtn.setObjectName('grades_btn')
+        self.disBtn.clicked.connect(lambda: self.switch_frame(3))
+        self.disBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))    
+
     def switch_frame(self, page):
         if page == 2:
             self.stack_container.setCurrentWidget(self.delete)
-            self.addBtn.setObjectName('grades_btn')
-            self.addBtn.setStyleSheet('styles.css')
             self.delBtn.setObjectName('grades_btn_active')
             self.delBtn.setStyleSheet('styles.css')
+            for item in [self.addBtn, self.disBtn]:
+                item.setObjectName('grades_btn')
+                item.setStyleSheet('style.css')
         elif page == 1:
             self.stack_container.setCurrentWidget(self.add)
             self.addBtn.setObjectName('grades_btn_active')
-            self.addBtn.setStyleSheet('styles.css')
-            self.delBtn.setObjectName('grades_btn')
-            self.delBtn.setStyleSheet('styles.css')
-        else:
-            print('error, page not found!')
+            self.addBtn.setStyleSheet('style.css')
+            for item in [self.delBtn, self.disBtn]:
+                item.setObjectName('grades_btn')
+                item.setStyleSheet('style.css')
+        elif page == 3:
+            self.stack_container.setCurrentWidget(self.dis)
+            self.disBtn.setObjectName('grades_btn_active')
+            self.disBtn.setStyleSheet('style.css')
+            for item in [self.addBtn, self.delBtn]:
+                item.setObjectName('grades_btn')
+                item.setStyleSheet('style.css')
+                
 
 class AddNew(QtWidgets.QFrame):
     
@@ -69,25 +83,23 @@ class AddNew(QtWidgets.QFrame):
         lname.setGeometry(355, 390, 100, 20)
         group = QtWidgets.QLabel('Group:', self)
         group.setGeometry(388, 450, 100, 20)
-    
         #inputs
         self.box = QtWidgets.QComboBox(self)
         self.box.addItem('Student')
         self.box.addItem('Teacher')
         self.box.setGeometry(450, 200, 200, 40)
+        self.box.setObjectName('drop_box')
         self.cnp_inp = QtWidgets.QLineEdit(self)
         self.fname_inp = QtWidgets.QLineEdit(self)
         self.lname_inp = QtWidgets.QLineEdit(self)
         self.group_inp = QtWidgets.QLineEdit(self)
         self.group_inp.setMaxLength(4)
         he = 260
-        inputs = [self.cnp_inp, self.fname_inp, self.lname_inp, self.group_inp]
-        labels = [account, cnp, fname, lname, group]
-        for item in inputs:
+        for item in [self.cnp_inp, self.fname_inp, self.lname_inp, self.group_inp]:
             item.setObjectName('frame_input')
             item.setGeometry(450, he, 200, 40)
             he += 60
-        for item in labels:
+        for item in [account, cnp, fname, lname, group]:
             item.setObjectName('frame_text')
         #buttons
         self.add_entry = QtWidgets.QPushButton('ENTER', self)
@@ -105,17 +117,13 @@ class AddNew(QtWidgets.QFrame):
         else:
             account_type = 'No'
         cursor.execute('INSERT INTO all_users ("First Name", "Last Name", "Year", "CNP", "Password", "Student", "First_time", "Group") VALUES (?, ?, ?, ?, ?, ?, ?, ?)', (self.fname_inp.text(), self.lname_inp.text(), year, self.cnp_inp.text(), self.cnp_inp.text(), account_type, 'Yes', self.group_inp.text()))
-        conn.commit()
-        cursor.close()
-        conn.close()
+        close_db(conn, cursor)
         conn = sqlite3.connect('data/grades.db')
         cursor = conn.cursor()
         faculty_map = {'1': 'CH', '2': 'MEC', '3': 'CI', '4': 'DIMA', '5': 'ETTI', '6': 'IEEIA', '7': 'AC'}
         fac = faculty_map.get(self.group_inp.text()[0], None)
         cursor.execute('INSERT INTO grades ("CNP", "Fac") VALUES (?, ?)', (self.cnp_inp.text(), fac, ))
-        conn.commit()
-        cursor.close()
-        conn.close()
+        close_db(conn, cursor)
         
 class Delete(QtWidgets.QFrame):
     
@@ -128,7 +136,6 @@ class Delete(QtWidgets.QFrame):
         res = QtWidgets.QLabel('Reason:', self)
         res.setGeometry(365, 270, 150, 20)
         res.setObjectName('frame_text')
-
         #inputs
         self.cnp_inp = QtWidgets.QLineEdit(self)
         self.cnp_inp.setGeometry(450, 200, 200, 40)
@@ -136,17 +143,15 @@ class Delete(QtWidgets.QFrame):
         self.res_inp = QtWidgets.QLineEdit(self)
         self.res_inp.setGeometry(450, 260, 200, 40)
         self.res_inp.setObjectName('frame_input')
-
         #buttons
-
         self.delBtn = QtWidgets.QPushButton('DELETE',self)
         self.delBtn.setGeometry(450, 320, 200, 60)
         self.delBtn.setObjectName('grades_btn')
         self.delBtn.clicked.connect(self.delete_entry)
         self.delBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
-
+        
+    #Funtion verify input with db, if it's fine this delete row.
     def delete_entry(self):
-
         if self.cnp_inp.text().isdigit() and len(self.cnp_inp.text()) == 13:
             conn = sqlite3.connect('data/users.db')
             cursor = conn.cursor()
@@ -154,7 +159,6 @@ class Delete(QtWidgets.QFrame):
             for c in cursor.execute('SELECT CNP FROM all_users WHERE CNP = (?)', (self.cnp_inp.text(),)):
                 cnp.append(c)
             if cnp:
-                print(cnp)
                 if len(self.res_inp.text()) > 3:
                     adm_log = open('logs/adm_log.txt', 'a')
                     now = datetime.now()
@@ -162,21 +166,23 @@ class Delete(QtWidgets.QFrame):
                     adm_log.write(f'[{dateANDtime}] Admin delete {self.cnp_inp.text()}. Reason: {self.res_inp.text()}\n')
                     adm_log.close()
                     cursor.execute('DELETE FROM all_users WHERE CNP =(?)', (self.cnp_inp.text(),))
-                    conn.commit()
-                    cursor.close()
-                    conn.close()
+                    close_db(conn, cursor)
                     conn = sqlite3.connect('data/grades.db')
                     cursor = conn.cursor()
                     cursor.execute('DELETE FROM grades WHERE CNP = (?)', (self.cnp_inp.text(), ))
-                    conn.commit()
-                    cursor.close()
-                    conn.close()
+                    close_db(conn, cursor)
                 else:
                     print('Reason to short, you must enter 3 characters.')
             else:
                 print('This CNP is not in the database.')
         else:
             print("You don't enter a CNP.")       
+
+class Discipline(QtWidgets.QFrame):
+    def __init__(self):
+        super().__init__()
+
+
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)

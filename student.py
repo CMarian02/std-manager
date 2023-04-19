@@ -1,6 +1,6 @@
 from PyQt6 import QtWidgets, QtCore, QtGui
 import sqlite3
-
+from fast_func import *
 class GradesPage(QtWidgets.QMainWindow):
     def __init__(self, get_cnp, get_group, get_year):
         super().__init__()
@@ -203,23 +203,20 @@ class AveragePage(QtWidgets.QFrame):
         self.put_logo(get_group)
         #Buttons
         self.year1 = QtWidgets.QPushButton('YEAR I', self)
-        self.year1.setGeometry(130,0, 110, 60)
         self.year1.clicked.connect(lambda: self.fill_table(get_cnp, '1', get_group))
         self.year2 = QtWidgets.QPushButton('YEAR II', self)
-        self.year2.setGeometry(250,0, 110, 60)
         self.year2.clicked.connect(lambda: self.fill_table(get_cnp, '2', get_group))
         self.year3 = QtWidgets.QPushButton('YEAR III', self)
-        self.year3.setGeometry(370,0, 110, 60)
         self.year3.clicked.connect(lambda: self.fill_table(get_cnp, '3', get_group))
         self.year4 = QtWidgets.QPushButton('YEAR IV', self)
-        self.year4.setGeometry(490,0, 110, 60)
         self.year4.clicked.connect(lambda: self.fill_table(get_cnp, '4', get_group))
         self.year5 = QtWidgets.QPushButton('YEAR V', self)
-        self.year5.setGeometry(610,0, 110, 60)
         self.year6 = QtWidgets.QPushButton('YEAR VI', self)
-        self.year6.setGeometry(730,0, 110, 60)
         self.year7 = QtWidgets.QPushButton('ALL YEARS', self)
-        self.year7.setGeometry(850,0, 110, 60)
+        he = 130
+        for item in [self.year1, self.year2, self.year3, self.year4, self.year5, self.year6, self.year7]:
+            item.setGeometry(he, 0, 110, 60)
+            he += 120
         #vertical buttons
         self.grades = QtWidgets.QPushButton('GRADES', self)
         self.grades.setGeometry(10, 230, 80, 80)
@@ -295,23 +292,19 @@ class AveragePage(QtWidgets.QFrame):
     #Return grades for disciplines where you give sem, year, fac and cnp.
     def check_grades(self, cnp, year, sem, fac):
         #A function to close sqlite connection.
-        def c_close():
-            conn.commit()
-            cursor.close()
-            conn.close()
         dis_names = []
         conn = sqlite3.connect('data/discipline.db')
         cursor = conn.cursor()
         for name in cursor.execute('SELECT "Name" FROM disciplines WHERE "YEAR" = (?) AND "SEM" = (?) AND Fac = (?)',(str(year), sem, fac)):
             dis_names.append(name[0].replace(' ', '_'))
-        c_close()
+        close_db(conn, cursor)
         if len(dis_names) == 5:
             grades = []
             conn = sqlite3.connect('data/grades.db')
             cursor = conn.cursor()
             for grade in cursor.execute('SELECT "{}", "{}", "{}", "{}", "{}" FROM grades WHERE CNP = ? AND Fac =?'.format(dis_names[0], dis_names[1], dis_names[2], dis_names[3], dis_names[4]), (cnp,fac, )):
                     grades.append(grade)
-            c_close
+            close_db(conn, cursor)
             return grades
         else:
             print('Your dis_names list is incomplete!')

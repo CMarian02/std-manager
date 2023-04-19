@@ -168,7 +168,10 @@ QTableWidget{
     font-size:15px;
     border-radius: 10px;
 }
-/* AVERAGE PAGE */
+
+QFrame#AVG{
+    background-color:#1a181b;
+}
 
     /* Labels */
 
@@ -214,4 +217,14 @@ QLineEdit#frame_input{
     background:transparent;
     border: none;
     border-bottom:1px solid #0F4D3A;
+}
+
+    /* DropBox */
+
+QComboBox#drop_box{
+    border: none;
+    color: white;
+    background-color: #0f4d3a;
+    font-family: Bebas Neue;
+    font-size: 18px;
 }
