@@ -212,11 +212,16 @@ class Discipline(QtWidgets.QFrame):
             he += 60
         #buttons
         self.addBtn = QtWidgets.QPushButton('ADD',self)
-        self.addBtn.setGeometry(450, 580, 200, 60)
+        self.addBtn.setGeometry(400, 580, 100, 60)
         self.addBtn.setObjectName('grades_btn')
         self.addBtn.clicked.connect(self.add_dis)
         self.addBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
-        
+        self.delBtn = QtWidgets.QPushButton('DELETE',self)
+        self.delBtn.setGeometry(530, 580, 100, 60)
+        self.delBtn.setObjectName('grades_btn')
+        self.delBtn.clicked.connect(self.del_dis)
+        self.delBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+    #Function to add descipline in databases 
     def add_dis(self):
 
         conn = sqlite3.connect('data/discipline.db')
@@ -227,7 +232,17 @@ class Discipline(QtWidgets.QFrame):
         cursor = conn.cursor()
         cursor.execute('ALTER TABLE grades ADD COLUMN {} TEXT'.format(self.dis_inp.text().replace(' ', '_')))
         close_db(conn, cursor)
+    
+    def del_dis(self):
 
+        conn = sqlite3.connect('data/discipline.db')
+        cursor = conn.cursor()
+        cursor.execute('DELETE FROM disciplines WHERE "Name" = (?) AND "Fac" = (?)', (self.dis_inp.text(), self.fac_inp.text(), ))
+        close_db(conn, cursor)
+        conn = sqlite3.connect('data/grades.db')
+        cursor = conn.cursor()
+        cursor.execute('ALTER TABLE grades DROP COLUMN {}'.format(self.dis_inp.text().replace(' ', '_')))
+        close_db(conn, cursor)
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
