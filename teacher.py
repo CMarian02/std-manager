@@ -125,13 +125,13 @@ class AddPage(QtWidgets.QWidget):
                         log.close()
                         close_db(conn, cursor)
                     else:
-                        print('you enter a string or your number is not valid bsc is > 10')
+                        create_error(self, 'This is a invalid input!', 520, 560, 170, 30)
                 else:
-                    print(f'Your disciplines is not {self.disci_inp.text()}')
+                    create_error(self, f'Your disciplines is not {self.disci_inp.text()}', 400, 560, 250, 30)
             else:
-                print('Discipline not found!')
+                create_error(self, 'Discipline not found!', 400, 560, 170, 30)
         else:
-            print('User not found!')
+            create_error(self, 'Your user input not find!', 340, 560, 170, 30)
 #SamePage with Add, and probably like ModPage this deleted, bcs you can edit grade in '0' to make null.
 class DelPage(QtWidgets.QWidget):
     def __init__(self, teach_dis):

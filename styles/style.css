@@ -190,6 +190,14 @@ QLabel#frame_text{
     font-family: Bebas Neue;
     font-size: 25px;
 }
+
+QLabel#error_frame{
+    background-color:#946929;
+    border-radius: 10px;
+    color: #5a1212;
+    font-size: 11px;
+    font-weight: 800;
+}
     /* Buttons */
 
 QPushButton#grades_btn{
