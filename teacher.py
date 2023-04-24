@@ -11,13 +11,9 @@ class Main(QtWidgets.QMainWindow):
         self.setMinimumSize(QtCore.QSize(1000, 700))
         self.setMaximumSize(QtCore.QSize(1000, 700))
         self.add_page = AddPage(teach_dis, cnp)
-        self.del_page = DelPage(teach_dis)
-        self.mod_page = ModPage(teach_dis)
         self.stack_container = QtWidgets.QStackedWidget()
         self.setCentralWidget(self.stack_container)
         self.stack_container.addWidget(self.add_page)
-        self.stack_container.addWidget(self.del_page)
-        self.stack_container.addWidget(self.mod_page)
         self.stack_container.setCurrentWidget(self.add_page)
         #labels
         self.vers_text = QtWidgets.QLabel('v0.2.0', self)
@@ -30,43 +26,9 @@ class Main(QtWidgets.QMainWindow):
         self.add_btn = QtWidgets.QPushButton('ADD GRADE', self)
         self.add_btn.setGeometry(10, 200, 100, 50)
         self.add_btn.setObjectName('grades_btn_active')
-        self.add_btn.clicked.connect(lambda: self.switch_frame(1))
         self.add_btn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
-        self.del_btn = QtWidgets.QPushButton('DEL GRADE', self)
-        self.del_btn.setGeometry(10, 350, 100, 50)
-        self.del_btn.setObjectName('grades_btn')
-        self.del_btn.clicked.connect(lambda: self.switch_frame(2))
-        self.del_btn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
-        self.mod_btn = QtWidgets.QPushButton('MOD GRADE', self)
-        self.mod_btn.setGeometry(10, 500, 100, 50)
-        self.mod_btn.setObjectName('grades_btn')
-        self.mod_btn.clicked.connect(lambda: self.switch_frame(3))
     #This is function to switch frames.
-    def switch_frame(self, page):
-        if page == 2:
-            self.stack_container.setCurrentWidget(self.del_page)
-            self.del_btn.setObjectName('grades_btn_active')
-            self.del_btn.setStyleSheet('style.css')
-            for item in [self.add_btn, self.mod_btn]:
-                item.setObjectName('grades_btn')
-                item.setStyleSheet('style.css')
-        elif page == 1:
-            self.stack_container.setCurrentWidget(self.add_page)
-            self.add_btn.setObjectName('grades_btn_active')
-            self.add_btn.setStyleSheet('style.css')
-            for item in [self.del_btn, self.mod_btn]:
-                item.setObjectName('grades_btn')
-                item.setStyleSheet('style.css')
-        elif page == 3:
-            self.stack_container.setCurrentWidget(self.mod_page)
-            self.mod_btn.setObjectName('grades_btn_active')
-            self.mod_btn.setStyleSheet('style.css')
-            for item in [self.del_btn, self.add_btn]:
-                item.setObjectName('grades_btn')
-                item.setStyleSheet('style.css')
-        else:
-            print('error, page not found!')
-
+   
 class AddPage(QtWidgets.QWidget):
     def __init__(self, teach_dis, cnp):
         super().__init__()
@@ -125,91 +87,13 @@ class AddPage(QtWidgets.QWidget):
                         log.close()
                         close_db(conn, cursor)
                     else:
-                        create_error(self, 'This is a invalid input!', 520, 560, 170, 30)
+                        create_error(self, 'You enter a wrong grade!', 460, 560, 170, 30)
                 else:
                     create_error(self, f'Your disciplines is not {self.disci_inp.text()}', 400, 560, 250, 30)
             else:
                 create_error(self, 'Discipline not found!', 400, 560, 170, 30)
         else:
             create_error(self, 'Your user input not find!', 340, 560, 170, 30)
-#SamePage with Add, and probably like ModPage this deleted, bcs you can edit grade in '0' to make null.
-class DelPage(QtWidgets.QWidget):
-    def __init__(self, teach_dis):
-        super().__init__()
-        #labels
-        title = QtWidgets.QLabel('DELETE GRADES', self)
-        title.setGeometry(400, 120, 300, 45)
-        title.setObjectName('frame_title')
-        f_name = QtWidgets.QLabel('FIRST NAME:', self)
-        f_name.setGeometry(250, 220, 100, 20)
-        l_name = QtWidgets.QLabel('LAST NAME:', self)
-        l_name.setGeometry(254, 280, 100, 20)
-        group = QtWidgets.QLabel('GROUP:', self)
-        group.setGeometry(286, 340, 100, 20)
-        discipline = QtWidgets.QLabel('DISCIPLINE:', self)
-        discipline.setGeometry(253, 400, 100, 20)
-        grade = QtWidgets.QLabel('GRADE:', self)
-        grade.setGeometry(286, 460, 100, 20)
-        #inputs
-        self.fname_inp = QtWidgets.QLineEdit(self)
-        self.lname_inp = QtWidgets.QLineEdit(self)
-        self.group_inp = QtWidgets.QLineEdit(self)
-        self.group_inp.setMaxLength(4)
-        self.disci_inp = QtWidgets.QLineEdit(self)
-        self.grade_inp = QtWidgets.QLineEdit(self)
-        self.grade_inp.setMaxLength(2)
-        #buttons
-        self.send_add = QtWidgets.QPushButton('DEL', self)
-        self.send_add.setGeometry(450, 520, 150, 40)
-        self.send_add.setObjectName('grades_btn')
-        #Create a function to put object name and geometry!
-        he = 220
-        for item in [self.fname_inp, self.lname_inp, self.group_inp, self.disci_inp, self.grade_inp]:
-            item.setObjectName('frame_input')
-            item.setGeometry(350, he, 200, 20)
-            he += 60
-        for item in [f_name, l_name, group, grade, discipline]:
-            item.setObjectName('frame_text')
-
-#Probably delete, because you can update from AddPage!
-class ModPage(QtWidgets.QWidget):
-    def __init__(self, teach_dis):
-        super().__init__()
-        #labels
-        title = QtWidgets.QLabel('MODIFY GRADES', self)
-        title.setGeometry(400, 120, 300, 45)
-        title.setObjectName('frame_title')
-        f_name = QtWidgets.QLabel('FIRST NAME:', self)
-        f_name.setGeometry(250, 220, 100, 20)
-        l_name = QtWidgets.QLabel('LAST NAME:', self)
-        l_name.setGeometry(254, 280, 100, 20)
-        group = QtWidgets.QLabel('GROUP:', self)
-        group.setGeometry(286, 340, 100, 20)
-        discipline = QtWidgets.QLabel('DISCIPLINE:', self)
-        discipline.setGeometry(253, 400, 100, 20)
-        grade = QtWidgets.QLabel('GRADE:', self)
-        grade.setGeometry(286, 460, 100, 20)
-        #inputs
-        self.fname_inp = QtWidgets.QLineEdit(self)
-        self.lname_inp = QtWidgets.QLineEdit(self)
-        self.group_inp = QtWidgets.QLineEdit(self)
-        self.group_inp.setMaxLength(4)
-        self.disci_inp = QtWidgets.QLineEdit(self)
-        self.grade_inp = QtWidgets.QLineEdit(self)
-        self.grade_inp.setMaxLength(2)
-        #buttons
-        self.send_add = QtWidgets.QPushButton('MOD', self)
-        self.send_add.setGeometry(450, 520, 150, 40)
-        self.send_add.setObjectName('grades_btn')
-        #Create a function to put object name and geometry!
-        he = 220
-        for item in [self.fname_inp, self.lname_inp, self.group_inp, self.disci_inp, self.grade_inp]:
-            item.setObjectName('frame_input')
-            item.setGeometry(350, he, 200, 20)
-            he += 60
-        for item in [f_name, l_name, group, grade, discipline]:
-            item.setObjectName('frame_text')
-
 #Function to get data from database files
 def take_data(path, fname, lname, group, discipline = '', valid = True):
     conn = sqlite3.connect(path)
