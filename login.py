@@ -1,8 +1,8 @@
 from PyQt6 import QtWidgets, QtCore, QtGui
-import sqlite3
+import sqlite3, sys
 from student import *
 from teacher import *
-import sys
+from fast_func import *
 
 class MyApp(QtWidgets.QMainWindow):
     def __init__(self):
@@ -84,7 +84,7 @@ class MyApp(QtWidgets.QMainWindow):
                         for first in cursor.execute('SELECT First_time FROM all_users WHERE "CNP" = (?)', (self.inp_cnp.text(),)):
                             first_time = first[0]
                         if first_time == "Yes":
-                            reset_frame = ResetPassword(self.inp_cnp.text())
+                            reset_frame = ResetPassword(self.inp_cnp.text(), True)
                             self.setCentralWidget(reset_frame)
                         else:
                             self.close()
@@ -94,7 +94,7 @@ class MyApp(QtWidgets.QMainWindow):
                         for first in cursor.execute('SELECT First_time FROM all_users WHERE "CNP" = (?)', (self.inp_cnp.text(),)):
                             first_time = first[0]
                         if first_time == "Yes":
-                            reset_frame = ResetPassword(self.inp_cnp.text())
+                            reset_frame = ResetPassword(self.inp_cnp.text(), False)
                             self.setCentralWidget(reset_frame)
                         else:
                             teach_dis = []
@@ -112,9 +112,7 @@ class MyApp(QtWidgets.QMainWindow):
                     print('You have a problem, your password is wrong!')
                 
         
-        conn.commit()
-        cursor.close()
-        conn.close()
+        close_db(conn, cursor)
     def switch_logo(self):
             self.cst += 1
             if self.cst == 1:
@@ -130,10 +128,11 @@ class MyApp(QtWidgets.QMainWindow):
 #If your account in database is 'first time' login on account, he push to reset password for security
 #In future this page was been costumize!
 class ResetPassword(QtWidgets.QFrame):
-    def __init__(self, cnp_input):
+    def __init__(self, cnp_input, student):
         super().__init__()
         self.resize(800, 650)
         self.cnp_input = cnp_input
+        self.student = student
         #labels
         self.log_title = QtWidgets.QLabel('CHANGE PASSWORD', self)
         self.log_title.setGeometry(150, 70, 500, 90)
@@ -154,7 +153,6 @@ class ResetPassword(QtWidgets.QFrame):
         if event.key() == QtCore.Qt.Key.Key_Enter or event.key() == QtCore.Qt.Key.Key_Return:
             self.reset_password()
     def reset_password(self):
-
         #Check If Password is Strong
         Number = False
         Upper = False
@@ -174,12 +172,16 @@ class ResetPassword(QtWidgets.QFrame):
                     if Symbol == True:
                         Strong = True
                     else:
+                        create_error(self, 'No symbol in your password.', 355, 520, 170, 30)
                         print('No symbol in your password')
                 else:
+                    create_error(self, 'No upper case in your password.', 355, 520, 170, 30)
                     print('No upper case in your password')
             else:
+                create_error(self, 'No number in your password.', 355, 520, 170, 30)
                 print('No Number in your password:')
         else:
+            create_error(self, 'Password to short(<8 chars).', 355, 520, 170, 30)
             print('<8 char.')
 
         # Insert new password in your DataBase file
@@ -188,14 +190,22 @@ class ResetPassword(QtWidgets.QFrame):
             cursor = conn.cursor()
             cursor.execute('UPDATE all_users SET First_Time = "No" WHERE "CNP" = (?)', (self.cnp_input,))
             cursor.execute('UPDATE all_users SET Password = (?) WHERE "CNP" = (?)', (self.inp_npass.text(), self.cnp_input))
-            conn.commit()
-            cursor.close()
-            conn.close()
+            close_db(conn, cursor)
             self.close()
-            # !!!!!!! HERE PUT A FUNC TO VERIFY IF PERSON WHAT IS CONNECTED IS STUDENT/TEACH/ADMIN!!!!!!!!!!!!!!! 
-            self.main_app = GradesPage(self.inp_cnp.text(),self.group, self.year)
-            self.main_app.show()
-
+            if self.student == True:
+                self.main_app = GradesPage(self.inp_cnp.text(),self.group, self.year)
+                self.main_app.show()
+            else:
+                conn = sqlite3.connect('data/users.db')
+                cursor = conn.cursor()
+                teach_dis = []
+                for dis in cursor.execute('SELECT Discipline FROM all_users WHERE "CNP" = (?)', (self.cnp_input.text(),)):
+                    teach_dis.append(dis[0])
+                    if teach_dis:
+                        teach_dis = teach_dis[0].split(',')
+                    else:
+                        print('your disciplines not found!')          
+                self.main_app = Main(teach_dis, self.cnp_input.text())
 #Running App
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
