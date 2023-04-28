@@ -173,16 +173,12 @@ class ResetPassword(QtWidgets.QFrame):
                         Strong = True
                     else:
                         create_error(self, 'No symbol in your password.', 355, 520, 170, 30)
-                        print('No symbol in your password')
                 else:
                     create_error(self, 'No upper case in your password.', 355, 520, 170, 30)
-                    print('No upper case in your password')
             else:
                 create_error(self, 'No number in your password.', 355, 520, 170, 30)
-                print('No Number in your password:')
         else:
             create_error(self, 'Password to short(<8 chars).', 355, 520, 170, 30)
-            print('<8 char.')
 
         # Insert new password in your DataBase file
         if Strong == True:
@@ -199,13 +195,13 @@ class ResetPassword(QtWidgets.QFrame):
                 conn = sqlite3.connect('data/users.db')
                 cursor = conn.cursor()
                 teach_dis = []
-                for dis in cursor.execute('SELECT Discipline FROM all_users WHERE "CNP" = (?)', (self.cnp_input.text(),)):
+                for dis in cursor.execute('SELECT Discipline FROM all_users WHERE "CNP" = (?)', (self.cnp_input,)):
                     teach_dis.append(dis[0])
                     if teach_dis:
                         teach_dis = teach_dis[0].split(',')
                     else:
                         print('your disciplines not found!')          
-                self.main_app = Main(teach_dis, self.cnp_input.text())
+                self.main_app = Main(teach_dis, self.cnp_input)
 #Running App
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
