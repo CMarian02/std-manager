@@ -86,6 +86,7 @@ class AddPage(QtWidgets.QWidget):
                         log.write(f"[{dateANDtime}] {cnp} changed student {self.fname_inp.text()} {self.lname_inp.text()} grade in discipline {self.disci_inp.text()}.His new grade is {self.grade_inp.text()}.\n")
                         log.close()
                         close_db(conn, cursor)
+                        good_ans(self, f'Student {self.fname_inp.text()} {self.lname_inp.text()} now has a grade {self.grade_inp.text()} in {self.disci_inp.text()}!', 400, 600, 330, 20)
                     else:
                         create_error(self, 'You enter a wrong grade!', 460, 560, 170, 30)
                 else:

@@ -99,6 +99,38 @@ QLabel#semester_text{
     font-size:12px;
     font-weight: 900;
 }
+
+QLabel#teachpg_left{
+    background-image: url('img/teach/left_logo.png');
+}
+
+QLabel#frame_title{
+    color:white;
+    font-family: Bebas Neue;
+    font-size: 50px;
+}
+
+QLabel#frame_text{
+    color:white;
+    font-family: Bebas Neue;
+    font-size: 25px;
+}
+
+QLabel#error_frame{
+    background-color:#946929;
+    border-radius: 10px;
+    color: #5a1212;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+QLabel#succes_frame{
+    background-color: #0f4d3a;
+    border-radius: 10px;
+    color: white;
+    font-size: 11px;
+    font-weight: 800;
+}
 /* Edit Inputs */
 
 QLineEdit#input_logpg{
@@ -118,6 +150,17 @@ QLineEdit#input_logpg:hover{
 QLineEdit#input_logpg:focus{
     border-bottom: 1.5px solid whitesmoke;
 }
+
+QLineEdit#frame_input{
+    color: white;
+    font-family: Roboto;
+    font-size: 17px;
+    font-weight: 700;
+    background:transparent;
+    border: none;
+    border-bottom:1px solid #0F4D3A;
+}
+
 
 
 /* Edit Buttons */
@@ -160,45 +203,6 @@ QPushButton#switch_sem{
     font-size: 12px;
     font-weight: 900;
 }
-/* Edit Table */
-QTableWidget{
-    background-color:#0F4D3A;
-    color: white;
-    border:none;
-    font-size:15px;
-    border-radius: 10px;
-}
-
-QFrame#AVG{
-    background-color:#1a181b;
-}
-
-    /* Labels */
-
-QLabel#teachpg_left{
-    background-image: url('img/teach/left_logo.png');
-}
-
-QLabel#frame_title{
-    color:white;
-    font-family: Bebas Neue;
-    font-size: 50px;
-}
-
-QLabel#frame_text{
-    color:white;
-    font-family: Bebas Neue;
-    font-size: 25px;
-}
-
-QLabel#error_frame{
-    background-color:#946929;
-    border-radius: 10px;
-    color: #5a1212;
-    font-size: 11px;
-    font-weight: 800;
-}
-    /* Buttons */
 
 QPushButton#grades_btn{
     color:white;
@@ -214,17 +218,18 @@ QPushButton#grades_btn_active{
     font-family: Bebas Neue;
     font-size: 20px;
 }
-
-    /* Inputs */
-
-QLineEdit#frame_input{
+/* Edit Table */
+QTableWidget{
+    background-color:#0F4D3A;
     color: white;
-    font-family: Roboto;
-    font-size: 17px;
-    font-weight: 700;
-    background:transparent;
-    border: none;
-    border-bottom:1px solid #0F4D3A;
+    border:none;
+    font-size:15px;
+    border-radius: 10px;
+}
+/* Frame */ 
+
+QFrame#AVG{
+    background-color:#1a181b;
 }
 
     /* DropBox */
