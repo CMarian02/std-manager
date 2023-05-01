@@ -134,9 +134,12 @@ class ResetPassword(QtWidgets.QFrame):
         self.cnp_input = cnp_input
         self.student = student
         #labels
-        self.log_title = QtWidgets.QLabel('CHANGE PASSWORD', self)
-        self.log_title.setGeometry(150, 70, 500, 90)
-        self.log_title.setObjectName('log_title')
+        self.log_title = QtWidgets.QLabel('RESET PASSWORD', self)
+        self.log_title.setGeometry(250, 70, 500, 90)
+        self.log_title.setObjectName('reg_title')
+        self.logo_reg = QtWidgets.QLabel(self)
+        self.logo_reg.setGeometry(270, 150, 200, 200)
+        self.logo_reg.setObjectName('reg_logo')
         #inputs
         self.inp_npass = QtWidgets.QLineEdit(self)
         self.inp_npass.setGeometry(300, 350, 200, 50)

@@ -131,6 +131,17 @@ QLabel#succes_frame{
     font-size: 11px;
     font-weight: 800;
 }
+
+QLabel#reg_title{
+    color: #0F4D3A;
+    font-size: 54px;
+    font-weight: 900;
+    font-family: Bebas Neue;
+}
+
+QLabel#reg_logo{
+    background-image: url('img/login_register/regist.png')
+}
 /* Edit Inputs */
 
 QLineEdit#input_logpg{
