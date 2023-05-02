@@ -84,7 +84,7 @@ class MyApp(QtWidgets.QMainWindow):
                         for first in cursor.execute('SELECT First_time FROM all_users WHERE "CNP" = (?)', (self.inp_cnp.text(),)):
                             first_time = first[0]
                         if first_time == "Yes":
-                            reset_frame = ResetPassword(self.inp_cnp.text(), True)
+                            reset_frame = ResetPassword(self.inp_cnp.text(), True, self.group, self.year)
                             self.setCentralWidget(reset_frame)
                         else:
                             self.close()
@@ -94,7 +94,7 @@ class MyApp(QtWidgets.QMainWindow):
                         for first in cursor.execute('SELECT First_time FROM all_users WHERE "CNP" = (?)', (self.inp_cnp.text(),)):
                             first_time = first[0]
                         if first_time == "Yes":
-                            reset_frame = ResetPassword(self.inp_cnp.text(), False)
+                            reset_frame = ResetPassword(self.inp_cnp.text(), False, None, None)
                             self.setCentralWidget(reset_frame)
                         else:
                             teach_dis = []
@@ -106,8 +106,7 @@ class MyApp(QtWidgets.QMainWindow):
                                 print('your disciplines not found!')
                             self.close()
                             self.main_app = Main(teach_dis, self.inp_cnp.text())
-                            self.main_app.show()
-                            
+                            self.main_app.show()     
                 else:
                     print('You have a problem, your password is wrong!')
                 
@@ -128,11 +127,13 @@ class MyApp(QtWidgets.QMainWindow):
 #If your account in database is 'first time' login on account, he push to reset password for security
 #In future this page was been costumize!
 class ResetPassword(QtWidgets.QFrame):
-    def __init__(self, cnp_input, student):
+    def __init__(self, cnp_input, student, group, year):
         super().__init__()
         self.resize(800, 650)
         self.cnp_input = cnp_input
         self.student = student
+        self.group = group
+        self.year = year
         #labels
         self.log_title = QtWidgets.QLabel('RESET PASSWORD', self)
         self.log_title.setGeometry(250, 70, 500, 90)
@@ -190,10 +191,8 @@ class ResetPassword(QtWidgets.QFrame):
             cursor.execute('UPDATE all_users SET First_Time = "No" WHERE "CNP" = (?)', (self.cnp_input,))
             cursor.execute('UPDATE all_users SET Password = (?) WHERE "CNP" = (?)', (self.inp_npass.text(), self.cnp_input))
             close_db(conn, cursor)
-            self.close()
             if self.student == True:
-                self.main_app = GradesPage(self.inp_cnp.text(),self.group, self.year)
-                self.main_app.show()
+                self.main_app = GradesPage(self.cnp_input, self.group, self.year)
             else:
                 conn = sqlite3.connect('data/users.db')
                 cursor = conn.cursor()
@@ -203,8 +202,12 @@ class ResetPassword(QtWidgets.QFrame):
                     if teach_dis:
                         teach_dis = teach_dis[0].split(',')
                     else:
-                        print('your disciplines not found!')          
+                        print('your disciplines not found test!')        
                 self.main_app = Main(teach_dis, self.cnp_input)
+            self.main_app.show()
+            window.close()
+                
+
 #Running App
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
