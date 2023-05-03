@@ -138,22 +138,34 @@ class ResetPassword(QtWidgets.QFrame):
         self.log_title = QtWidgets.QLabel('RESET PASSWORD', self)
         self.log_title.setGeometry(250, 70, 500, 90)
         self.log_title.setObjectName('reg_title')
+        self.left_cont = QtWidgets.QLabel(self)
+        self.left_cont.setGeometry(150, 150, 250, 400)
+        self.left_cont.setObjectName('left_cont')
+        self.right_cont = QtWidgets.QLabel(self)
+        self.right_cont.setGeometry(410, 150, 250, 400)
+        self.right_cont.setObjectName('right_cont')
+        self.acc_logo = QtWidgets.QLabel(self)
+        self.acc_logo.setGeometry(150, 140, 200, 200)
+        if self.student == True:
+            self.acc_logo.setObjectName('student_cap')
+        else:
+            self.acc_logo.setObjectName('teacher')
         self.logo_reg = QtWidgets.QLabel(self)
-        self.logo_reg.setGeometry(270, 150, 200, 200)
+        self.logo_reg.setGeometry(150, 350, 200, 200)
         self.logo_reg.setObjectName('reg_logo')
         #inputs
         self.inp_npass = QtWidgets.QLineEdit(self)
-        self.inp_npass.setGeometry(300, 350, 200, 50)
+        self.inp_npass.setGeometry(435, 350, 200, 50)
         self.inp_npass.setObjectName('input_logpg')
         self.inp_npass.setEchoMode(QtWidgets.QLineEdit.EchoMode.Password)   
         #buttons
         self.btn_change = QtWidgets.QPushButton(self)
-        self.btn_change.setGeometry(300, 450, 200, 40)
+        self.btn_change.setGeometry(435, 450, 200, 40)
         self.btn_change.setText('CHANGE')
         self.btn_change.setObjectName('btn_log')
         self.btn_change.clicked.connect(self.reset_password)
 
-    def keyPressEvent(self, event):
+    def keyPresstestEvent(self, event):
         if event.key() == QtCore.Qt.Key.Key_Enter or event.key() == QtCore.Qt.Key.Key_Return:
             self.reset_password()
     def reset_password(self):
