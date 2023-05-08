@@ -95,6 +95,10 @@ class AddPage(QtWidgets.QWidget):
                 create_error(self, 'Discipline not found!', 400, 560, 170, 30)
         else:
             create_error(self, 'Your user input not find!', 340, 560, 170, 30)
+
+class ExamDates(QtWidgets.QWidget):
+    pass
+
 #Function to get data from database files
 def take_data(path, fname, lname, group, discipline = '', valid = True):
     conn = sqlite3.connect(path)

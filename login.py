@@ -164,8 +164,7 @@ class ResetPassword(QtWidgets.QFrame):
         self.btn_change.setText('CHANGE')
         self.btn_change.setObjectName('btn_log')
         self.btn_change.clicked.connect(self.reset_password)
-
-    def keyPresstestEvent(self, event):
+    def keyPressEvent(self, event):
         if event.key() == QtCore.Qt.Key.Key_Enter or event.key() == QtCore.Qt.Key.Key_Return:
             self.reset_password()
     def reset_password(self):
