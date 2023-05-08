@@ -1,0 +1,3 @@
+-> Bug atunci cand incerci sa adaugi o nota unui elev dar nu-i pui numele, prenumele si grupa ( indiferent daca ai 2 din ele si una lipseste, programul da crash.)
+-> De adaugat erori la admin input-urile de la AdminPage
+-> Eroarea de pe RegisterPage este pozitionata prost.
